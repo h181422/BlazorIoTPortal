@@ -1,0 +1,60 @@
+﻿@page "/book"
+@inject IJSRuntime JsRuntime
+@inject IDeviceApi DeviceApi
+@layout Shared.MainLayout
+@using System.Linq
+
+<div class="book">
+    <h1>Book Your Ticket</h1>
+
+    <EditForm Model="@Device" OnValidSubmit="@HandleValidSubmit">
+
+        <div class="form-group">
+            <label for="passenger">Id</label>
+            <InputNumber id="passenger" class="form-control" @bind-Value="@Device.Id" />
+        </div>
+        <div class="form-group">
+            <label for="date">Name</label>
+            <InputText id="date" class="form-control" @bind-Value="@Device.Name" />
+        </div>
+        <div class="form-group">
+            <label for="date">Link to device</label>
+            <InputText id="date" class="form-control" @bind-Value="@Device.Link" />
+        </div>
+        <div class="form-group">
+            <label for="date">Link to image</label>
+            <InputText id="date" class="form-control" @bind-Value="@Device.ImageLink" />
+        </div>
+        <div class="form-group">
+            <label for="from">Publish</label>
+            <InputCheckbox id="from" class="form-control" @bind-Value="@Device.Published" />
+        </div>
+        <ValidationSummary />
+
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </EditForm>
+
+</div>
+
+@code {
+    private Device Device { get; set; } = new Device();
+
+    protected override async Task OnInitializedAsync()
+    {
+        //Hover funksjonnavnet for å se hva denne gjør
+        throw new NotImplementedException();
+    }
+
+    private async Task HandleValidSubmit()
+    {
+        var device = await DeviceApi.GetDeviceAsync(Device.Name);
+        if (device != null)
+        {
+            //Use Javascript
+            await JsRuntime.InvokeAsync<object>("IoTPortal.alert", "Sorry, this name is taken");
+            return;
+        }
+
+        await DeviceApi.PostDevice(Device);
+    }
+}

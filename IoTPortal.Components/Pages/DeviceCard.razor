@@ -1,0 +1,22 @@
+﻿@using IoTPortal.Model
+@layout Shared.MainLayout
+
+<div class="card">
+    <DeviceImage DeviceImageLink="@GetDeviceLink(Device.Name)" />
+    <div class="card-body">
+        <h5 class="card-title">@Device.Name</h5>
+        <p class="card-text">
+            This Device has id <span class="highlight">@Device.Id</span> and is <span class="highlight">@(Device.Published ? "" : "not ") published!</span>
+        </p>
+    </div>
+    <ul class="list-group list-group-flush">
+        <li class="list-group-item"><a href="@Device.Link">Visit device!</a></li>
+    </ul>
+</div>
+
+@code {
+    [Parameter]
+    public Device Device { get; set; }
+
+    private string GetDeviceLink(string deviceName) => Device.ImageLink;
+}
