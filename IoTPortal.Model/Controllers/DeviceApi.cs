@@ -40,5 +40,16 @@ namespace IoTPortal.Model
             await client.PostAsync($"device", content);
             throw new System.NotImplementedException();
         }
+
+        public async Task<IEnumerable<Device>> GetSubscriptionsAsync()
+        {
+            var response = await client.GetAsync($"subscribed");
+            var devicesJson = await response.Content.ReadAsStringAsync();
+            var bases = JsonSerializer.Deserialize<List<Device>>(devicesJson, new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true,
+            });
+            return bases;
+        }
     }
 }

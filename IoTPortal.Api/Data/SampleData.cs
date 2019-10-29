@@ -24,5 +24,11 @@ namespace IoTPortal.UI.Server.Data
                 +"-isometric-cooling-system-of-a-nuclear-power-plant-isolated-on-white-background-cooling-towers.jpg"}
         };
 
+        public static List<Device> Subscriptions = new List<Device>
+        {
+            new Device() { Id = 1, Name = "Temperaturmåler", Published = true,
+                ImageLink="https://miro.medium.com/max/1152/0*ceM6ksqq1i2H40Zj.png",
+                Link="https://miro.medium.com/max/1152/0*ceM6ksqq1i2H40Zj.png" },
+        };
     }
 }

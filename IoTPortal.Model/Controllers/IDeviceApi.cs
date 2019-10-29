@@ -13,5 +13,6 @@ namespace IoTPortal.Model
 
         Task PostDevice(Device device);
 
+        Task<IEnumerable<Device>> GetSubscriptionsAsync();
     }
 }
