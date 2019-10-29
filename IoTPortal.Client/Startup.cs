@@ -2,8 +2,8 @@ using Microsoft.AspNetCore.Components.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using IoTPortal.Components;
 using IoTPortal.Model;
-using StartshipTraveler.Client.Data;
-using StartshipTraveler.Model;
+using IoTPortal.Client.Data;
+using IoTPortal.Model;
 
 namespace IoTPortal.Client
 {
