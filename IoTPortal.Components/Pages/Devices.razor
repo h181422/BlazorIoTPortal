@@ -21,16 +21,17 @@
     }
 </div>
 
+
 @code {
     private IEnumerable<Device> AllDevices { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
         AllDevices = await DeviceApi.GetDevicesAsync();
-        RefreshTickets();
+        RefreshDevices();
     }
 
-    private async void RefreshTickets()
+    private async void RefreshDevices()
     {
         AllDevices = await DeviceApi.GetDevicesAsync();
         StateHasChanged();

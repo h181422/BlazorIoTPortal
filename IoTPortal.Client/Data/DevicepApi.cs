@@ -1,8 +1,8 @@
-﻿using StartshipTraveler.Model;
+﻿using IoTPortal.Model;
 using System;
 using System.Net.Http;
 
-namespace StartshipTraveler.Client.Data
+namespace IoTPortal.Client.Data
 {
     public class DeviceApi : DeviceApiBase
     {

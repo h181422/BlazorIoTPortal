@@ -1,4 +1,4 @@
-﻿@page "/book"
+﻿@page "/AddDevice"
 @inject IJSRuntime JsRuntime
 @inject IDeviceApi DeviceApi
 @layout Shared.MainLayout
@@ -51,10 +51,11 @@
         if (device != null)
         {
             //Use Javascript
-            await JsRuntime.InvokeAsync<object>("IoTPortal.alert", "Sorry, this name is taken");
-            return;
-        }
-
-        await DeviceApi.PostDevice(Device);
+            await JsRuntime.InvokeAsync<object>
+    ("IoTPortal.alert", "Sorry, this name is taken");
+    return;
     }
-}
+
+    await DeviceApi.PostDevice(Device);
+    }
+    }

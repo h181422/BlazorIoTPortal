@@ -5,7 +5,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace StartshipTraveler.Model
+namespace IoTPortal.Model
 {
     public abstract class DeviceApiBase : IDeviceApi
     {
@@ -15,6 +15,8 @@ namespace StartshipTraveler.Model
         {
             set { client = value; }
         }
+
+        public string Navn { get { return Navn.ToLower(); } set { Navn = value.ToLower();  } }
 
         public Task<Device> GetDeviceAsync(string name)
         {
