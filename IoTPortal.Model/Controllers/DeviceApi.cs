@@ -25,13 +25,32 @@ namespace IoTPortal.Model
 
         public async Task<IEnumerable<Device>> GetDevicesAsync()
         {
-            var response = await client.GetAsync($"device");
+            var response = await client.GetAsync($"device/all");
             var devicesJson = await response.Content.ReadAsStringAsync();
-            var bases = JsonSerializer.Deserialize<List<Device>>(devicesJson, new JsonSerializerOptions
+            var devices = JsonSerializer.Deserialize<List<Device>>(devicesJson, new JsonSerializerOptions
             {
                 PropertyNameCaseInsensitive = true,
             });
-            return bases;
+            return devices;
+        }
+
+        public async Task<IEnumerable<Device>> GetPublishedDevicesAsync(string searchTerm)
+        {
+            HttpResponseMessage response = null;
+            if (searchTerm.Equals(""))
+            {
+                response = await client.GetAsync($"search/published");
+            }
+            else
+            {
+                response = await client.GetAsync($"search/{searchTerm}");
+            }
+            var devicesJson = await response.Content.ReadAsStringAsync();
+            var devices = JsonSerializer.Deserialize<List<Device>>(devicesJson, new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true,
+            });
+            return devices;
         }
 
         public async Task PostDevice(Device device)
