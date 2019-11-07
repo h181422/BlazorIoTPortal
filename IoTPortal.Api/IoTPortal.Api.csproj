@@ -7,6 +7,14 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <PackageReference Include="Microsoft.Azure.ServiceBus" Version="4.1.0" />
+      <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="2.9.7">
+        <PrivateAssets>all</PrivateAssets>
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      </PackageReference>
+    </ItemGroup>
+
+    <ItemGroup>
       <ProjectReference Include="..\IoTPortal.Model\IoTPortal.Model.csproj" />
     </ItemGroup>
 

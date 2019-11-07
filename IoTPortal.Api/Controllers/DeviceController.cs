@@ -29,7 +29,9 @@ namespace IoTPortal.UI.Server.Controllers
         [HttpPost]
         public IActionResult PostDevice([FromBody] Device device)
         {
-            SampleData.Devices.Add(device);
+            Api.Service.Bus bussen = new Api.Service.Bus();
+            bussen.SendMessage(device);
+            System.Console.WriteLine("test i api");
             return Ok();
         }
     }

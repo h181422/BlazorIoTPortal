@@ -1,4 +1,6 @@
 ﻿@using IoTPortal.Model
+@inject IJSRuntime JsRuntime
+@inject IDeviceApi DeviceApi
 @layout Shared.MainLayout
 
 <div class="card">
@@ -12,6 +14,7 @@
     <ul class="list-group list-group-flush">
         <li class="list-group-item"><a href="@Device.Link">Visit device!</a></li>
     </ul>
+    <button @onclick="HandleValidSubmit">Yes!</button>
 </div>
 
 @code {
@@ -19,4 +22,19 @@
     public Device Device { get; set; }
 
     private string GetDeviceLink(string deviceName) => Device.ImageLink;
+
+    private async Task OnYes()
+    {
+        var device = await DeviceApi.GetDeviceAsync(Device.Name);
+        Console.WriteLine("Write to the console in C#! 'Yes' button was selected.");
+         await DeviceApi.PostDevice(Device);
+    }
+    private async Task HandleValidSubmit()
+    {
+        var device = new Device();
+       
+        Console.WriteLine("test");
+        DeviceApi.PostDevice(Device);
+    }
+}
 }
