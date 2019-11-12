@@ -1,14 +1,14 @@
 ﻿using IoTPortal.Model;
+using IoTPortal.Model.Controllers;
 using System;
 using System.Net.Http;
 
-namespace IoTPortal.ServerSide.Data
+namespace IoTPortal.Client.Data
 {
-    public class DeviceApi : DeviceApiBase
+    public class UserApi : UserApiBase
     {
-        public DeviceApi(IHttpClientFactory factory)
+        public UserApi(HttpClient client)
         {
-            var client = factory.CreateClient();
             client.BaseAddress = new Uri("http://localhost:5000/api/");
             Client = client;
         }

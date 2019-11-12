@@ -30,11 +30,16 @@ namespace IoTPortal.UI.Server.Controllers
         [HttpGet]
         [Route("search/{searchTerm}")]
         public IEnumerable<Device> GetSearchDevices([FromRoute] string searchTerm) =>
-            SampleData.Devices.Where(b => b.Published && b.Name.Contains(searchTerm));
+            SampleData.Devices.Where(b => b.Published && (b.Name.ToLower()).Contains(searchTerm.ToLower()));
 
         [HttpGet]
         [Route("search")]
         public IEnumerable<Device> GetPublishedDevices() =>
+            SampleData.Devices.Where(b => b.Published);
+
+        [HttpGet]
+        [Route("subscribed")]
+        public IEnumerable<Device> GetSubscribedDevices() =>
             SampleData.Devices.Where(b => b.Published);
 
         [HttpGet]

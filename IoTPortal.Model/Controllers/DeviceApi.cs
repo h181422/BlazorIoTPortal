@@ -45,6 +45,17 @@ namespace IoTPortal.Model
             return devices;
         }
 
+        public async Task<IEnumerable<Device>> GetSubscribedDevicesAsync()
+        {
+            var response = await client.GetAsync($"device/subscribed");
+            var devicesJson = await response.Content.ReadAsStringAsync();
+            var devices = JsonSerializer.Deserialize<List<Device>>(devicesJson, new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true,
+            });
+            return devices;
+        }
+
         public async Task PostDevice(Device device)
         {
             var content = new StringContent(JsonSerializer.Serialize(device), Encoding.UTF8, "application/json");

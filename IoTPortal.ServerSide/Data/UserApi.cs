@@ -4,9 +4,9 @@ using System.Net.Http;
 
 namespace IoTPortal.ServerSide.Data
 {
-    public class DeviceApi : DeviceApiBase
+    public class UserApi : UserApiBase
     {
-        public DeviceApi(IHttpClientFactory factory)
+        public UserApi(IHttpClientFactory factory)
         {
             var client = factory.CreateClient();
             client.BaseAddress = new Uri("http://localhost:5000/api/");

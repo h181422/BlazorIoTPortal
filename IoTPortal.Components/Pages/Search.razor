@@ -5,38 +5,57 @@
 <h1>Search</h1>
 
 <div id="ticket-list">
-    @if (AllDevices == null)
+    @if (allDevices == null)
     {
         <h2>Fetching devices...</h2>
     }
     else
     {
-<div class="row">
-    @if (AllDevices.Count() == 0)
-    {
-        <h2>No published devices</h2>
-    }
-    else
-    {
         <div class="row">
-            @foreach (var device in AllDevices)
+            @if (allDevices.Count() == 0)
             {
-                <DeviceCard Device="@device" />
+                <h2>No published devices</h2>
+            }
+            else
+            {
+                <table>
+                    <tr>
+                        <td>
+                            <input @bind="@searchTerm" />
+                        </td>
+                        <td>
+                            <button type="button" @onclick="SearchDevices">Search</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <div class="row">
+                            @foreach (var device in allDevices)
+                            {
+                                <DeviceCard Device="@device" />
+                            }
+                        </div>
+                    </tr>
+                </table>
             }
         </div>
-    }
-</div>
     }
 </div>
 
 
 @code {
-    private IEnumerable<Device> AllDevices { get; set; }
+    private IEnumerable<Device> allDevices { get; set; }
+    string searchTerm { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
-        AllDevices = await DeviceApi.GetPublishedDevicesAsync("");
-            
+        allDevices = await DeviceApi.GetPublishedDevicesAsync("");
+
+    }
+
+    protected async Task SearchDevices()
+    {
+        System.Diagnostics.Debug.WriteLine("Searchterm: " + searchTerm);
+        allDevices = await DeviceApi.GetPublishedDevicesAsync(searchTerm);
     }
 
 }

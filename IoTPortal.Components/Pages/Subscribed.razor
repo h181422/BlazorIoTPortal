@@ -1,38 +1,38 @@
-﻿@page "/subscribed"
+﻿@page "/subscriptions"
 @inject IDeviceApi DeviceApi
 @layout Shared.MainLayout
 
-<h1>Your Devices</h1>
+<h1>Subscribed devices</h1>
 
 <div id="ticket-list">
-    @if (AllDevices == null)
+    @if (allDevices == null)
     {
-        <h2>Loading your devices...</h2>
+        <h2>Loading subscribed devices...</h2>
     }
     else
     {
-        <div class="row">
-            @foreach (var device in AllDevices)
-            {
-                <DeviceCard Device="@device" />
-            }
-        </div>
+        @if (allDevices.Count() == 0)
+        {
+            <h2>You are not subscribed to any devices</h2>
+        }
+        else
+        {
+            <div class="row">
+                @foreach (var device in allDevices)
+                {
+                    <DeviceCard Device="@device" />
+                }
+            </div>
+        }
     }
 </div>
 
 
 @code {
-    private IEnumerable<Device> AllDevices { get; set; }
+    private IEnumerable<Device> allDevices { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
-        AllDevices = await DeviceApi.GetDevicesAsync();
-        RefreshDevices();
-    }
-
-    private async void RefreshDevices()
-    {
-        AllDevices = await DeviceApi.GetDevicesAsync();
-        StateHasChanged();
+        allDevices = await DeviceApi.GetSubscribedDevicesAsync();
     }
 }
