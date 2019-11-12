@@ -13,6 +13,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\IoTPortal.Model\IoTPortal.Model.csproj" />
+      <ProjectReference Include="..\Logic\Logic.csproj" />
     </ItemGroup>
 
 </Project>

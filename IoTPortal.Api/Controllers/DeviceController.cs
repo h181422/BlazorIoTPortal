@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using IoTPortal.UI.Server.Data;
 using IoTPortal.Model;
 using System.Linq;
+using Logic.Device;
 
 namespace IoTPortal.UI.Server.Controllers
 {
@@ -10,19 +11,24 @@ namespace IoTPortal.UI.Server.Controllers
     [Route("api/[controller]")]
     public class DeviceController : ControllerBase
     {
+        private readonly IDeviceLogic _deviceLogic;
+
+        public DeviceController()
+        {
+            _deviceLogic = new DeviceLogic();
+        }
+
         [HttpGet]
         [Route("all")]
-        public IEnumerable<Device> GetDevices() => SampleData.Devices;
+        public IEnumerable<Device> GetDevices() => _deviceLogic.GetDevices();
 
         [HttpGet]
         [Route("{deviceName}")]
         public IActionResult GetDevice([FromRoute] string deviceName)
         {
-            var deviceObj = SampleData.Devices.FirstOrDefault(b => b.Name == deviceName);
+            var deviceObj = _deviceLogic.GetDevice(deviceName);
             if (deviceObj == null)
-            {
                 return NotFound();
-            }
 
             return Ok(deviceObj);
         }
@@ -36,6 +42,11 @@ namespace IoTPortal.UI.Server.Controllers
         [Route("search")]
         public IEnumerable<Device> GetPublishedDevices() =>
             SampleData.Devices.Where(b => b.Published);
+
+        [HttpDelete]
+        [Route("{deviceId}")]
+        public IActionResult GetPublishedDevices([FromRoute] int deviceId) =>
+            Ok(_deviceLogic.RemoveDevice(deviceId));
 
         [HttpGet]
         [Route("published")]

@@ -1,15 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using IoTPortal.Model;
 
-namespace Data.DAO
+namespace Data.DAO.Device
 {
-    public class DeviceDao
+    public class DeviceDao : IDeviceDao
     {
 
-        public void SaveDevice(Device device)
+        public void SaveDevice(IoTPortal.Model.Device device)
         {
             using (var db = new DataContext())
             {
@@ -18,14 +16,14 @@ namespace Data.DAO
             }
         }
 
-        public List<Device> GetDevicesFromUser(int userId)
+        public List<IoTPortal.Model.Device> GetDevicesFromUser(int userId)
         {
             using (var db = new DataContext())
             {
                 return db.Users.FirstOrDefault(x => x.Id == userId)?.OwnDevices;
             }
         }
-        public List<Device> GetDevices()
+        public List<IoTPortal.Model.Device> GetDevices()
         {
             using (var db = new DataContext())
             {
@@ -48,13 +46,20 @@ namespace Data.DAO
             return true;
         }
 
-        public Device GetDevice(int deviceId)
+        public IoTPortal.Model.Device GetDevice(int deviceId)
         {
             using (var db = new DataContext())
             {
                 return db.Devices.FirstOrDefault(x => x.Id == deviceId);
             }
         }
-        
+
+        public IoTPortal.Model.Device GetDevice(string deviceName)
+        {
+            using (var db = new DataContext())
+            {
+                return db.Devices.FirstOrDefault(x => x.Name == deviceName);
+            }
+        }
     }
 }
