@@ -18,7 +18,7 @@ namespace IoTPortal.Model
 
         public string Navn { get { return Navn.ToLower(); } set { Navn = value.ToLower();  } }
 
-        public Task<Device> GetDeviceAsync(string name)
+        public async Task<Device> GetDeviceAsync(string name)
         {
             throw new System.NotImplementedException();
         }
