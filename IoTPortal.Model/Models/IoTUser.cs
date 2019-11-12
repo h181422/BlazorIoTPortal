@@ -7,6 +7,7 @@ namespace IoTPortal.Model
 {
     public class IoTUser
     {
+        [Key]
         public int Id { get; set; }
         public string Username { get; set; }
         public bool Password { get; set; }

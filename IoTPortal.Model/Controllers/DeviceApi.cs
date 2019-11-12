@@ -13,12 +13,11 @@ namespace IoTPortal.Model
 
         protected HttpClient Client
         {
-            set { client = value; }
+            set => client = value;
         }
 
-        public string Navn { get { return Navn.ToLower(); } set { Navn = value.ToLower();  } }
 
-        public Task<Device> GetDeviceAsync(string name)
+        public async Task<Device> GetDeviceAsync(string name)
         {
             throw new System.NotImplementedException();
         }
@@ -59,8 +58,7 @@ namespace IoTPortal.Model
         public async Task PostDevice(Device device)
         {
             var content = new StringContent(JsonSerializer.Serialize(device), Encoding.UTF8, "application/json");
-            await client.PostAsync($"device", content);
-            throw new System.NotImplementedException();
+            var result = await client.PostAsync($"device", content);
         }
     }
 }

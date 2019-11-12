@@ -6,6 +6,7 @@ namespace IoTPortal.Model
 {
     public class Feedback
     {
+        [Key]
         public int Id { get; set; }
         public IoTUser User { get; set; }
         public string Text { get; set; }
