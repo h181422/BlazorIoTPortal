@@ -36,11 +36,7 @@ namespace IoTPortal.UI.Server.Controllers
         [HttpGet]
         [Route("search/{searchTerm}")]
         public IEnumerable<Device> GetSearchDevices([FromRoute] string searchTerm) =>
-<<<<<<< HEAD
-            SampleData.Devices.Where(b => b.Published && (b.Name.ToLower()).Contains(searchTerm.ToLower()));
-=======
             _deviceLogic.GetDevices(searchTerm, true, true);
->>>>>>> 63c3f7cb1aaf6c812733ce75451f10c4b92b2fc3
 
         [HttpGet]
         [Route("search")]
@@ -51,11 +47,6 @@ namespace IoTPortal.UI.Server.Controllers
         [Route("{deviceId}")]
         public IActionResult GetPublishedDevices([FromRoute] int deviceId) =>
             Ok(_deviceLogic.GetDevices(true, true));
-
-        [HttpGet]
-        [Route("subscribed")]
-        public IEnumerable<Device> GetSubscribedDevices() =>
-            SampleData.Devices.Where(b => b.Published);
 
         [HttpGet]
         [Route("published")]

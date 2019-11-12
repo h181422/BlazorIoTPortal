@@ -24,7 +24,5 @@ namespace IoTPortal.UI.Server.Data
                 +"-isometric-cooling-system-of-a-nuclear-power-plant-isolated-on-white-background-cooling-towers.jpg"}
         };
 
-        public static IoTUser user = new IoTUser(Id = 0, Email = "sondrebolland@hotmail.com", Username = "sondre", Password = "bolland");
-
     }
 }

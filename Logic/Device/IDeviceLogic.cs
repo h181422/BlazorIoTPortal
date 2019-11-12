@@ -10,5 +10,6 @@ namespace Logic.Device
         List<IoTPortal.Model.Device> GetDevices(bool checkPublished = false, bool published = true);
         IoTPortal.Model.Device GetDevice(int deviceId, bool checkPublished = false, bool published = true);
         IoTPortal.Model.Device GetDevice(string deviceName, bool checkPublished = false, bool published = true);
+        List<IoTPortal.Model.Device> GetDevices(string nameContains, bool checkPublished = false, bool published = true);
     }
 }
