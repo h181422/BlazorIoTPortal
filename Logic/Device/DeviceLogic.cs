@@ -22,24 +22,29 @@ namespace Logic.Device
             _dao.SaveDevice(device);
         }
 
-        public List<IoTPortal.Model.Device> GetDevicesFromUser(int userId)
+        public List<IoTPortal.Model.Device> GetDevicesFromUser(int userId, bool checkPublished = false, bool published = true)
         {
-            return _dao.GetDevicesFromUser(userId);
+            return _dao.GetDevicesFromUser(userId, checkPublished, published);
         }
 
-        public List<IoTPortal.Model.Device> GetDevices()
+        public List<IoTPortal.Model.Device> GetDevices(bool checkPublished = false, bool published = true)
         {
-            return _dao.GetDevices();
+            return _dao.GetDevices(checkPublished, published);
         }
 
-        public IoTPortal.Model.Device GetDevice(int deviceId)
+        public IoTPortal.Model.Device GetDevice(int deviceId, bool checkPublished = false, bool published = true)
         {
-            return _dao.GetDevice(deviceId);
+            return _dao.GetDevice(deviceId, checkPublished, published);
         }
 
-        public IoTPortal.Model.Device GetDevice(string deviceName)
+        public IoTPortal.Model.Device GetDevice(string deviceName, bool checkPublished = false, bool published = true)
         {
-            return _dao.GetDevice(deviceName);
+            return _dao.GetDevice(deviceName, checkPublished, published);
+        }
+
+        public List<IoTPortal.Model.Device> GetDevices(string nameContains, bool checkPublished = false, bool published = true)
+        {
+            return _dao.GetDevices(nameContains, checkPublished, published);
         }
     }
 }

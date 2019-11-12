@@ -36,17 +36,17 @@ namespace IoTPortal.UI.Server.Controllers
         [HttpGet]
         [Route("search/{searchTerm}")]
         public IEnumerable<Device> GetSearchDevices([FromRoute] string searchTerm) =>
-            SampleData.Devices.Where(b => b.Published && b.Name.Contains(searchTerm));
+            _deviceLogic.GetDevices(searchTerm, true, true);
 
         [HttpGet]
         [Route("search")]
         public IEnumerable<Device> GetPublishedDevices() =>
-            SampleData.Devices.Where(b => b.Published);
+            _deviceLogic.GetDevices(checkPublished: true, true);
 
         [HttpDelete]
         [Route("{deviceId}")]
         public IActionResult GetPublishedDevices([FromRoute] int deviceId) =>
-            Ok(_deviceLogic.RemoveDevice(deviceId));
+            Ok(_deviceLogic.GetDevices(true, true));
 
         [HttpGet]
         [Route("published")]
