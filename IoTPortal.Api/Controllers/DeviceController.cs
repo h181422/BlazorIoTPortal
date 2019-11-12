@@ -24,7 +24,7 @@ namespace IoTPortal.UI.Server.Controllers
                 return NotFound();
             }
 
-            return Ok(baseObj);
+            return Ok(deviceObj);
         }
 
         [HttpGet]

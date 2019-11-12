@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using IoTPortal.Model;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using IoTPortal.Model;
 using IoTPortal.ServerSide.Data;
+
 
 namespace IoTPortal.ServerSide
 {
