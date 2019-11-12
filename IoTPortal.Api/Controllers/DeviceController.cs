@@ -17,13 +17,13 @@ namespace IoTPortal.UI.Server.Controllers
         [Route("{name}")]
         public IActionResult GetDevice([FromRoute] string name)
         {
-            var baseObj = SampleData.Devices.FirstOrDefault(b => b.Name == name);
-            if (baseObj == null)
+            var deviceObj = SampleData.Devices.FirstOrDefault(b => b.Name == name);
+            if (deviceObj == null)
             {
                 return NotFound();
             }
 
-            return Ok(baseObj);
+            return Ok(deviceObj);
         }
 
         [HttpPost]

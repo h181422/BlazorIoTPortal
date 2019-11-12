@@ -1,4 +1,4 @@
-﻿using StartshipTraveler.Model;
+﻿using IoTPortal.Model;
 using System;
 using System.Net.Http;
 
