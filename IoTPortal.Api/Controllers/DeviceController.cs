@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using IoTPortal.UI.Server.Data;
 using IoTPortal.Model;
 using System.Linq;
-using Logic.Device;
+using Logic.Devices;
 
 namespace IoTPortal.UI.Server.Controllers
 {

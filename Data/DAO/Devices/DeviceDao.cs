@@ -3,12 +3,12 @@ using System.Linq;
 using System.Runtime.Serialization.Formatters;
 using IoTPortal.Model;
 
-namespace Data.DAO.Device
+namespace Data.DAO.Devices
 {
     public class DeviceDao : IDeviceDao
     {
 
-        public void SaveDevice(IoTPortal.Model.Device device)
+        public void SaveDevice(Device device)
         {
             using (var db = new DataContext())
             {
@@ -17,7 +17,7 @@ namespace Data.DAO.Device
             }
         }
 
-        public List<IoTPortal.Model.Device> GetDevicesFromUser(int userId, bool checkPublished = false, bool published = true)
+        public List<Device> GetDevicesFromUser(int userId, bool checkPublished = false, bool published = true)
         {
             using (var db = new DataContext())
             {
@@ -26,7 +26,7 @@ namespace Data.DAO.Device
                 return db.Users.FirstOrDefault(x => x.Id == userId)?.OwnDevices;
             }
         }
-        public List<IoTPortal.Model.Device> GetDevices(bool checkPublished = false, bool published = true)
+        public List<Device> GetDevices(bool checkPublished = false, bool published = true)
         {
             using (var db = new DataContext())
             {
@@ -36,7 +36,7 @@ namespace Data.DAO.Device
             }
         }
 
-        public List<IoTPortal.Model.Device> GetDevices(string nameContains, bool checkPublished = false, bool published = true)
+        public List<Device> GetDevices(string nameContains, bool checkPublished = false, bool published = true)
         {
             using (var db = new DataContext())
             {
@@ -60,7 +60,7 @@ namespace Data.DAO.Device
             return true;
         }
 
-        public IoTPortal.Model.Device GetDevice(int deviceId, bool checkPublished = false, bool published = true)
+        public Device GetDevice(int deviceId, bool checkPublished = false, bool published = true)
         {
             using (var db = new DataContext())
             {
@@ -70,7 +70,7 @@ namespace Data.DAO.Device
             }
         }
 
-        public IoTPortal.Model.Device GetDevice(string deviceName, bool checkPublished = false, bool published = true)
+        public Device GetDevice(string deviceName, bool checkPublished = false, bool published = true)
         {
             using (var db = new DataContext())
             {

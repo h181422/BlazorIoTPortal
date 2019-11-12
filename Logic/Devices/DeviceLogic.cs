@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
-using Data.DAO.Device;
+using Data.DAO.Devices;
+using IoTPortal.Model;
 
-namespace Logic.Device
+namespace Logic.Devices
 {
     public class DeviceLogic : IDeviceLogic
     {
@@ -17,32 +18,32 @@ namespace Logic.Device
             return _dao.RemoveDevice(deviceId);
         }
 
-        public void SaveDevice(IoTPortal.Model.Device device)
+        public void SaveDevice(Device device)
         {
             _dao.SaveDevice(device);
         }
 
-        public List<IoTPortal.Model.Device> GetDevicesFromUser(int userId, bool checkPublished = false, bool published = true)
+        public List<Device> GetDevicesFromUser(int userId, bool checkPublished = false, bool published = true)
         {
             return _dao.GetDevicesFromUser(userId, checkPublished, published);
         }
 
-        public List<IoTPortal.Model.Device> GetDevices(bool checkPublished = false, bool published = true)
+        public List<Device> GetDevices(bool checkPublished = false, bool published = true)
         {
             return _dao.GetDevices(checkPublished, published);
         }
 
-        public IoTPortal.Model.Device GetDevice(int deviceId, bool checkPublished = false, bool published = true)
+        public Device GetDevice(int deviceId, bool checkPublished = false, bool published = true)
         {
             return _dao.GetDevice(deviceId, checkPublished, published);
         }
 
-        public IoTPortal.Model.Device GetDevice(string deviceName, bool checkPublished = false, bool published = true)
+        public Device GetDevice(string deviceName, bool checkPublished = false, bool published = true)
         {
             return _dao.GetDevice(deviceName, checkPublished, published);
         }
 
-        public List<IoTPortal.Model.Device> GetDevices(string nameContains, bool checkPublished = false, bool published = true)
+        public List<Device> GetDevices(string nameContains, bool checkPublished = false, bool published = true)
         {
             return _dao.GetDevices(nameContains, checkPublished, published);
         }
