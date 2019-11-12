@@ -9,7 +9,7 @@ namespace IoTPortal.Model
     {
         Task<IEnumerable<Device>> GetDevicesAsync();
 
-        Task<IEnumerable<Device>> GetPublishedDevicesAsync(string searchQuery);
+        Task<IEnumerable<Device>> GetPublishedDevicesAsync(string searchTerm);
 
         Task<Device> GetDeviceAsync(string name);
 

@@ -12,7 +12,6 @@ namespace IoTPortal.Model
         public bool Published { get; set; }
         public string Link { get; set; }
         public string ImageLink { get; set; }
-
         public List<Feedback> Feedback { get; set; }
     }
 

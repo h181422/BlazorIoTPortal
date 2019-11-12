@@ -11,44 +11,32 @@
     }
     else
     {
+<div class="row">
+    @if (AllDevices.Count() == 0)
+    {
+        <h2>No published devices</h2>
+    }
+    else
+    {
         <div class="row">
-            @if (AllDevices.Count() == 0)
-            {
-                <h2>No published devices</h2>
-            }
-            <form method="post">
-                <table>
-                    <tr>
-                        <td>
-                            <input bind-value-oninput="@SearchTerm" />
-                        </td>
-                    </tr>
-                </table>
-            </form>
             @foreach (var device in AllDevices)
             {
                 <DeviceCard Device="@device" />
             }
-
         </div>
+    }
+</div>
     }
 </div>
 
 
 @code {
     private IEnumerable<Device> AllDevices { get; set; }
-    private string SearchTerm { get; set; } = "";
 
     protected override async Task OnInitializedAsync()
     {
-        AllDevices = await DeviceApi.GetPublishedDevicesAsync("kake");
-
-    }
-
-    protected async void search()
-    {
-        AllDevices = await DeviceApi.GetPublishedDevicesAsync(SearchTerm);
-        StateHasChanged();
+        AllDevices = await DeviceApi.GetPublishedDevicesAsync("");
+            
     }
 
 }

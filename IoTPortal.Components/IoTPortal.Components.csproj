@@ -8,12 +8,15 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.AspNetCore.Components" Version="3.1.0-preview1.19508.20" />
-        <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="3.1.0-preview1.19508.20" />
+      <Compile Remove="wwwroot\images\**" />
+      <Content Remove="wwwroot\images\**" />
+      <EmbeddedResource Remove="wwwroot\images\**" />
+      <None Remove="wwwroot\images\**" />
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="wwwroot\images\" />
+        <PackageReference Include="Microsoft.AspNetCore.Components" Version="3.1.0-preview1.19508.20" />
+        <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="3.1.0-preview1.19508.20" />
     </ItemGroup>
 
     <ItemGroup>
