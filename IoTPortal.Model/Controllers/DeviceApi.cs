@@ -36,15 +36,7 @@ namespace IoTPortal.Model
 
         public async Task<IEnumerable<Device>> GetPublishedDevicesAsync(string searchTerm)
         {
-            HttpResponseMessage response = null;
-            if (searchTerm.Equals(""))
-            {
-                response = await client.GetAsync($"search/published");
-            }
-            else
-            {
-                response = await client.GetAsync($"search/{searchTerm}");
-            }
+            var response = await client.GetAsync($"search/" + searchTerm);
             var devicesJson = await response.Content.ReadAsStringAsync();
             var devices = JsonSerializer.Deserialize<List<Device>>(devicesJson, new JsonSerializerOptions
             {
