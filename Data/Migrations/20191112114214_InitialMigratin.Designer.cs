@@ -4,14 +4,16 @@ using Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20191112114214_InitialMigratin")]
+    partial class InitialMigratin
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -48,7 +50,7 @@ namespace Data.Migrations
 
                     b.HasIndex("IoTUserId");
 
-                    b.ToTable("Devices");
+                    b.ToTable("Employees");
                 });
 
             modelBuilder.Entity("IoTPortal.Model.Feedback", b =>
@@ -97,7 +99,7 @@ namespace Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users");
+                    b.ToTable("IoTUser");
                 });
 
             modelBuilder.Entity("IoTPortal.Model.Register", b =>
@@ -125,7 +127,7 @@ namespace Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Registrations");
+                    b.ToTable("Register");
                 });
 
             modelBuilder.Entity("IoTPortal.Model.Device", b =>

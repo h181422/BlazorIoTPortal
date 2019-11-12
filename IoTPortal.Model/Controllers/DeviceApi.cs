@@ -13,7 +13,7 @@ namespace IoTPortal.Model
 
         protected HttpClient Client
         {
-            set { client = value; }
+            set => client = value;
         }
 
 

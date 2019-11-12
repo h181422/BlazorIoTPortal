@@ -18,8 +18,8 @@ namespace IoTPortal.UI.Server.Controllers
         [Route("{deviceName}")]
         public IActionResult GetDevice([FromRoute] string deviceName)
         {
-            var baseObj = SampleData.Devices.FirstOrDefault(b => b.Name == deviceName);
-            if (baseObj == null)
+            var deviceObj = SampleData.Devices.FirstOrDefault(b => b.Name == deviceName);
+            if (deviceObj == null)
             {
                 return NotFound();
             }
