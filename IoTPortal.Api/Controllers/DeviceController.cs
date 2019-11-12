@@ -46,7 +46,7 @@ namespace IoTPortal.UI.Server.Controllers
         [HttpDelete]
         [Route("{deviceId}")]
         public IActionResult GetPublishedDevices([FromRoute] int deviceId) =>
-            Ok(_deviceLogic.GetDevices(true, true));
+            Ok(_deviceLogic.GetDevices(true, true).Where(x=>deviceId == x.Id));
 
         [HttpGet]
         [Route("published")]
