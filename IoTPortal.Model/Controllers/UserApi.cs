@@ -16,7 +16,7 @@ namespace IoTPortal.Model
 
         public async Task<IEnumerable<IoTUser>> GetUsersAsync()
         {
-            var response = await client.GetAsync($"all");
+            var response = await client.GetAsync($"User/all");
             var usersJson = await response.Content.ReadAsStringAsync();
             var users = JsonSerializer.Deserialize<List<IoTUser>>(usersJson, new JsonSerializerOptions
             {
@@ -30,9 +30,9 @@ namespace IoTPortal.Model
             throw new System.NotImplementedException();
         }
 
-        public async Task<IoTUser> GetUserAsync(int userId)
+        public async Task<IoTUser> GetUserAsync(int userIdentification)
         {
-            var response = await client.GetAsync($"{userId}");
+            var response = await client.GetAsync($"User/{userIdentification}");
             var usersJson = await response.Content.ReadAsStringAsync();
             var user = JsonSerializer.Deserialize<IoTUser>(usersJson, new JsonSerializerOptions
             {

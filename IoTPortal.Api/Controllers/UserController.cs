@@ -27,19 +27,12 @@ namespace IoTPortal.UI.Server.Controllers
         }
 
         [HttpGet]
-        [Route("{userId}")]
+        [Route("{userIdentification}")]
         public IActionResult GetUser([FromRoute] string userIdentification)
         {
-            IoTUser user = null;
-            int a;
-            if (int.TryParse(userIdentification, out a))
-            {
-                user = _userLogic.GetUser(a);
-            }
-            else
-            {
-                user = _userLogic.GetUser(userIdentification);
-            }
+            IoTUser user = int.TryParse(userIdentification, out int a)
+                ? _userLogic.GetUser(a)
+                : _userLogic.GetUser(userIdentification);
             if (user == null)
             {
                 return NotFound();
