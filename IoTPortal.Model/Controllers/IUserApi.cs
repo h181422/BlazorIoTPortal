@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace IoTPortal.Model.Controllers
+namespace IoTPortal.Model
 {
     public interface IUserApi
     {
@@ -14,5 +12,7 @@ namespace IoTPortal.Model.Controllers
         Task<IoTUser> GetUserAsync(string username);
 
         Task PostUser(IoTUser user);
+
+        Task<IEnumerable<Device>> GetSubscribedDevicesAsync(int userId);
     }
 }

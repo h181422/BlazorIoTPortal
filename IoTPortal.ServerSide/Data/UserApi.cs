@@ -1,7 +1,6 @@
 ﻿using IoTPortal.Model;
 using System;
 using System.Net.Http;
-using IoTPortal.Model.Controllers;
 
 namespace IoTPortal.ServerSide.Data
 {

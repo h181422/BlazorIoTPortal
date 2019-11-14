@@ -1,5 +1,5 @@
 ﻿@page "/subscriptions"
-@inject IDeviceApi DeviceApi
+@inject IUserApi UserApi
 @layout Shared.MainLayout
 
 <h1>Subscribed devices</h1>
@@ -33,6 +33,6 @@
 
     protected override async Task OnInitializedAsync()
     {
-        allDevices = await DeviceApi.GetSubscribedDevicesAsync();
+        allDevices = await UserApi.GetSubscribedDevicesAsync(0);
     }
 }
