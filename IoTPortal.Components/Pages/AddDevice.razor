@@ -37,20 +37,25 @@
 </div>
 
 @code {
-
     private Device Device { get; set; } = new Device();
+
+    protected override async Task OnInitializedAsync()
+    {
+        //Hover funksjonnavnet for å se hva denne gjør
+        throw new NotImplementedException();
+    }
 
     private async Task HandleValidSubmit()
     {
-        var device = await DeviceApi.GetDeviceAsync(Device.Id);
+        var device = await DeviceApi.GetDeviceAsync(Device.Name);
         if (device != null)
         {
             //Use Javascript
             await JsRuntime.InvokeAsync<object>
-            ("IoTPortal.alert", "Sorry, this name is taken");
-            return;
-        }
-
-        await DeviceApi.PostDevice(Device);
+    ("IoTPortal.alert", "Sorry, this name is taken");
+    return;
     }
-}
+
+    await DeviceApi.PostDevice(Device);
+    }
+    }
