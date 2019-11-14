@@ -51,8 +51,7 @@
         if (device != null)
         {
             //Use Javascript
-            await JsRuntime.InvokeAsync<object>
-    ("IoTPortal.alert", "Sorry, this name is taken");
+            await JsRuntime.InvokeAsync<object>("IoTPortal.alert", "Sorry, this name is taken");
     return;
     }
 
