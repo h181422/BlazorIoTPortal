@@ -10,5 +10,6 @@ namespace Logic.Users
         List<IoTUser> GetUsers();
         IoTUser GetUser(int userId);
         IoTUser GetUser(string username);
+        List<Device> GetSubscribedDevices(int userId);
     }
 }

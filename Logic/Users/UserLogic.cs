@@ -13,6 +13,19 @@ namespace Logic.Users
             _dao = new UserDao();
         }
 
+        public List<Device> GetSubscribedDevices(int userId)
+        {
+            var registers = _dao.GetSubscribedDevices(userId);
+            List<Device> devices = new List<Device>();
+            for (int i = 0; i < registers.Count; i++)
+            {
+                var register = registers[i];
+                var device = register.Dev;
+                devices.Add(device);
+            }
+            return devices;
+        }
+
         public IoTUser GetUser(int userId)
         {
             return _dao.GetUser(userId);

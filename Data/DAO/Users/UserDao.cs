@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization.Formatters;
 using IoTPortal.Model;
@@ -7,6 +8,14 @@ namespace Data.DAO.Users
 {
     public class UserDao : IUserDao
     {
+        public List<Register> GetSubscribedDevices(int userId)
+        {
+            using (var db = new DataContext())
+            {
+                
+            }
+            throw new NotImplementedException();
+        }
 
         public IoTUser GetUser(int userId)
         {

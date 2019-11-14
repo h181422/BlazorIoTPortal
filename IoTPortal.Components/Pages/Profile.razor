@@ -4,56 +4,57 @@
 
 <h3>Profile</h3>
 
-<table>
-    <tr>
-        <td>
-            <output>Email: </output>
-        </td>
-        <td>
-            <output>@user.Email</output>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <output>Username: </output>
-        </td>
-        <td>
-            <output>@user.Username</output>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <output>Passoword: </output>
-        </td>
-        <td>
-            <output>*******</output>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <output>Nr. own devices: </output>
-        </td>
-        <td>
-            <output>@user.OwnDevices.Count()</output>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <output>Nr. subscribed devices: </output>
-        </td>
-        <td>
-            <output>@user.SubscribedDevices.Count()</output>
-        </td>
-    </tr>
-</table>
+<div id="ticket-list">
+    <table>
+        <tr>
+            <td>
+                <output>Email: </output>
+            </td>
+            <td>
+                <output>@user.Email</output>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <output>Username: </output>
+            </td>
+            <td>
+                <output>@user.Username</output>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <output>Passoword: </output>
+            </td>
+            <td>
+                <output>*******</output>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <output>Nr. own devices: </output>
+            </td>
+            <td>
+                <output>@user.OwnDevices.Count()</output>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <output>Nr. subscribed devices: </output>
+            </td>
+            <td>
+                <output>@user.SubscribedDevices.Count()</output>
+            </td>
+        </tr>
+    </table>
+    </div>
+    @code {
 
-@code {
+        private IoTUser user { get; set; }
 
-    private IoTUser user { get; set; }
+        protected override async Task OnInitializedAsync()
+        {
+            user = await UserApi.GetUserAsync(0);
 
-    protected override async Task OnInitializedAsync()
-    {
-        user = await UserApi.GetUserAsync(0);
-
+        }
     }
-}

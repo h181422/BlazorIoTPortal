@@ -10,5 +10,6 @@ namespace Data.DAO.Users
         List<IoTUser> GetUsers();
         IoTUser GetUser(int userId);
         IoTUser GetUser(string username);
+        List<Register> GetSubscribedDevices(int userId);
     }
 }

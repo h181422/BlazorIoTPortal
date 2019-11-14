@@ -10,8 +10,8 @@
     <EditForm Model="@Device" OnValidSubmit="@HandleValidSubmit">
 
         <div class="form-group">
-            <label for="passenger">Id</label>
-            <InputNumber id="passenger" class="form-control" @bind-Value="@Device.Id" />
+            <label for="Id">Id</label>
+            <InputNumber id="id" class="form-control" @bind-Value="@Device.Id" />
         </div>
         <div class="form-group">
             <label for="date">Name</label>
@@ -19,15 +19,15 @@
         </div>
         <div class="form-group">
             <label for="date">Link to device</label>
-            <InputText id="date" class="form-control" @bind-Value="@Device.Link" />
+            <InputText id="link" class="form-control" @bind-Value="@Device.Link" />
         </div>
         <div class="form-group">
             <label for="date">Link to image</label>
-            <InputText id="date" class="form-control" @bind-Value="@Device.ImageLink" />
+            <InputText id="imageLink" class="form-control" @bind-Value="@Device.ImageLink" />
         </div>
         <div class="form-group">
             <label for="from">Publish</label>
-            <InputCheckbox id="from" class="form-control" @bind-Value="@Device.Published" />
+            <InputCheckbox id="published" class="form-control" @bind-Value="@Device.Published" />
         </div>
         <ValidationSummary />
 
@@ -37,25 +37,20 @@
 </div>
 
 @code {
-    private Device Device { get; set; } = new Device();
 
-    protected override async Task OnInitializedAsync()
-    {
-        //Hover funksjonnavnet for å se hva denne gjør
-        throw new NotImplementedException();
-    }
+    private Device Device { get; set; } = new Device();
 
     private async Task HandleValidSubmit()
     {
-        var device = await DeviceApi.GetDeviceAsync(Device.Name);
+        var device = await DeviceApi.GetDeviceAsync(Device.Id);
         if (device != null)
         {
             //Use Javascript
             await JsRuntime.InvokeAsync<object>
-    ("IoTPortal.alert", "Sorry, this name is taken");
-    return;
-    }
+            ("IoTPortal.alert", "Sorry, this name is taken");
+            return;
+        }
 
-    await DeviceApi.PostDevice(Device);
+        await DeviceApi.PostDevice(Device);
     }
-    }
+}

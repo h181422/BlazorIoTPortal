@@ -1,10 +1,9 @@
-﻿using IoTPortal.Model;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Net.Http;
-using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
-namespace IoTPortal.Model.Controllers
+
+namespace IoTPortal.Model
 {
     public abstract class UserApiBase : IUserApi
     {
@@ -51,6 +50,17 @@ namespace IoTPortal.Model.Controllers
                 PropertyNameCaseInsensitive = true,
             });
             return user;
+        }
+
+        public async Task<IEnumerable<Device>> GetSubscribedDevicesAsync(int userId)
+        {
+            var response = await client.GetAsync($"device/subscribed/{userId}");
+            var devicesJson = await response.Content.ReadAsStringAsync();
+            var devices = JsonSerializer.Deserialize<List<Device>>(devicesJson, new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true,
+            });
+            return devices;
         }
     }
 }

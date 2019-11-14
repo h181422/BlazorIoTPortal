@@ -1,5 +1,4 @@
 ﻿using IoTPortal.Model;
-using IoTPortal.Model.Controllers;
 using System;
 using System.Net.Http;
 

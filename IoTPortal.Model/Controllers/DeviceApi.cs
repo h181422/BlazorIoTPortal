@@ -1,5 +1,4 @@
-﻿using IoTPortal.Model;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 using System.Text.Json;
@@ -36,17 +35,6 @@ namespace IoTPortal.Model
         public async Task<IEnumerable<Device>> GetPublishedDevicesAsync(string searchTerm)
         {
             var response = await client.GetAsync($"device/search/{searchTerm}");
-            var devicesJson = await response.Content.ReadAsStringAsync();
-            var devices = JsonSerializer.Deserialize<List<Device>>(devicesJson, new JsonSerializerOptions
-            {
-                PropertyNameCaseInsensitive = true,
-            });
-            return devices;
-        }
-
-        public async Task<IEnumerable<Device>> GetSubscribedDevicesAsync()
-        {
-            var response = await client.GetAsync($"device/subscribed");
             var devicesJson = await response.Content.ReadAsStringAsync();
             var devices = JsonSerializer.Deserialize<List<Device>>(devicesJson, new JsonSerializerOptions
             {

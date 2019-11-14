@@ -50,7 +50,16 @@ namespace IoTPortal.UI.Server.Controllers
         [HttpPost]
         public IActionResult PostDevice([FromBody] IoTUser user)
         {
-            throw new NotImplementedException();
+            _userLogic.SaveUser(user);
+            return Ok();
+        }
+
+        [HttpGet]
+        [Route("subscribed/{userId}")]
+        public IEnumerable<Device> GetSubscribedDevices([FromRoute] string userId)
+        {
+            int id = int.Parse(userId);
+            return _userLogic.GetSubscribedDevices(id);
         }
     }
 }

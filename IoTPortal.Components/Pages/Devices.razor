@@ -12,6 +12,7 @@
     }
     else
     {
+        <a href="/AddDevice" style="font-size:20px;">Add Device</a>
         if (allDevices.Count() == 0)
         {
             <h2>You have no devices :(</h2>
@@ -36,4 +37,5 @@
     {
         allDevices = await DeviceApi.GetDevicesAsync();
     }
+
 }
