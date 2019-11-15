@@ -1,44 +1,46 @@
-﻿@page  "/"
-@page "/profile"
+﻿@page "/profile"
 @inject IUserApi UserApi
 @layout Shared.MainLayout
 
 <h3>Profile</h3>
 
-@if (user == null) {
-<h2>Loading...</h2>
+@if (user == null)
+{
+    <h2>Loading...</h2>
 }
-else {
-<div id="ticket-list">
-    <table>
-        <tr>
-            <td>
-                <h2>Email: </h2>
-            </td>
-            <td>
-                <h3>@user.Email</h3>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <h2>Username: </h2>
-            </td>
-            <td>
-                <h3>@user.Username</h3>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <h2>Passoword: </h2>
-            </td>
-            <td>
-                <h3>*******</h3>
-            </td>
-        </tr>
+else
+{
+    <div id="ticket-list">
+        <table>
+            <tr>
+                <td>
+                    <h2>Email: </h2>
+                </td>
+                <td>
+                    <h3>@user.Email</h3>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <h2>Username: </h2>
+                </td>
+                <td>
+                    <h3>@user.Username</h3>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <h2>Passoword: </h2>
+                </td>
+                <td>
+                    <h3>*******</h3>
+                </td>
+            </tr>
 
-    </table>
-</div>
+        </table>
+    </div>
 }
+
 @code {
 
     private IoTUser user { get; set; }
@@ -46,6 +48,6 @@ else {
     protected override async Task OnInitializedAsync()
     {
         user = await UserApi.GetUserAsync(0);
-
     }
+
 }

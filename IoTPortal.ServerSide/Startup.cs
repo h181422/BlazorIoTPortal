@@ -22,6 +22,7 @@ namespace IoTPortal.ServerSide
         {
             services.AddHttpClient();
             services.AddSingleton<IDeviceApi, DeviceApi>();
+            services.AddSingleton<IUserApi, UserApi>();
 
             services.AddRazorPages();
             services.AddServerSideBlazor();
