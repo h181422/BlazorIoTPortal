@@ -28,17 +28,17 @@ namespace IoTPortal.UI.Server.Controllers
 
         [HttpGet]
         [Route("{userId}")]
-        public IActionResult GetUser([FromRoute] string userIdentification)
+        public IActionResult GetUser([FromRoute] string userId)
         {
             IoTUser user = null;
             int a;
-            if (int.TryParse(userIdentification, out a))
+            if (int.TryParse(userId, out a))
             {
                 user = _userLogic.GetUser(a);
             }
             else
             {
-                user = _userLogic.GetUser(userIdentification);
+                user = _userLogic.GetUser(userId);
             }
             if (user == null)
             {
@@ -48,7 +48,7 @@ namespace IoTPortal.UI.Server.Controllers
         }
 
         [HttpPost]
-        public IActionResult PostDevice([FromBody] IoTUser user)
+        public IActionResult PostUser([FromBody] IoTUser user)
         {
             _userLogic.SaveUser(user);
             return Ok();

@@ -1,0 +1,23 @@
+﻿@using IoTPortal.Model
+@layout Shared.MainLayout
+@inject IDeviceApi  DeviceApi
+
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">Register ID: @Register.Id</h5>  
+        <button type="button" @onclick="invertApprove">Approve/Revoke</button>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public Register Register { get; set; }
+
+
+    private async Task invertApprove()
+    {
+        bool approved = !Register.Approved;
+        int id = Register.Id;
+        Register = await DeviceApi.SetApproved(approved, id);
+    }
+}

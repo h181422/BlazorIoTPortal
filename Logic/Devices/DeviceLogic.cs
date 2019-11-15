@@ -47,5 +47,37 @@ namespace Logic.Devices
         {
             return _dao.GetDevices(nameContains, checkPublished, published);
         }
+
+        public Register SetApprove(bool app, int registerId)
+        {
+            return _dao.SetApprove(app, registerId);
+        }
+
+        public List<Register> GetRequests(int userId)
+        {
+            var ownDevices = _dao.GetDevicesFromUser(userId);
+            /*if (ownDevices == null)
+            {
+                return new List<Register>();
+            }*/
+            var registers = _dao.GetRegisters();
+            System.Diagnostics.Debug.WriteLine("N registers: " + registers.Count);
+            List<Register> requests = new List<Register>();
+            /*for (int i = 0; i < registers.Count; i++)
+            {
+                var register = registers[i];
+                var registerDevice = register.Dev;
+                if (ownDevices.Contains(registerDevice))
+                {
+                    requests.Add(register);
+                }
+            }*/
+            return registers;
+        }
+
+        public Register GetSubscription(int registerId)
+        {
+            return _dao.GetSubscription(registerId);
+        }
     }
 }

@@ -15,10 +15,26 @@ namespace IoTPortal.Model
             set => client = value;
         }
 
-
-        public async Task<Device> GetDeviceAsync(string name)
+        public async Task<Device> DeleteDeviceAsync(int deviceId)
         {
-            throw new System.NotImplementedException();
+            var response = await client.GetAsync($"device/delete/{deviceId}");
+            var devicesJson = await response.Content.ReadAsStringAsync();
+            var device = JsonSerializer.Deserialize<Device>(devicesJson, new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true,
+            });
+            return device;
+        }
+
+        public async Task<Device> GetDeviceAsync(int deviceId)
+        {
+            var response = await client.GetAsync($"device/{deviceId}");
+            var devicesJson = await response.Content.ReadAsStringAsync();
+            var device = JsonSerializer.Deserialize<Device>(devicesJson, new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true,
+            });
+            return device;
         }
 
         public async Task<IEnumerable<Device>> GetDevicesAsync()
@@ -43,10 +59,44 @@ namespace IoTPortal.Model
             return devices;
         }
 
+        public async Task<IEnumerable<Register>> GetRequestsAsync(int userId)
+        {
+            var response = await client.GetAsync($"device/request/{userId}");
+            var registerJson = await response.Content.ReadAsStringAsync();
+            var requests = JsonSerializer.Deserialize<List<Register>>(registerJson, new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true,
+            });
+            return requests;
+        }
+
+        public async Task<Register> GetSubscriptionAsync(int registerId)
+        {
+            var response = await client.GetAsync($"device/register/{registerId}");
+            var registerJson = await response.Content.ReadAsStringAsync();
+            var register = JsonSerializer.Deserialize<Register>(registerJson, new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true,
+            });
+            return register;
+        }
+
         public async Task PostDevice(Device device)
         {
             var content = new StringContent(JsonSerializer.Serialize(device), Encoding.UTF8, "application/json");
             var result = await client.PostAsync($"device", content);
         }
+
+        public async Task<Register> SetApproved(bool app, int registerId)
+        {
+            var response = await client.GetAsync($"device/approve/{app}/{registerId}");
+            var registerJson = await response.Content.ReadAsStringAsync();
+            var register = JsonSerializer.Deserialize<Register>(registerJson, new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true,
+            });
+            return register;
+        }
+
     }
 }

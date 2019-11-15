@@ -9,9 +9,16 @@ namespace IoTPortal.Model
 
         Task<IEnumerable<Device>> GetPublishedDevicesAsync(string searchTerm);
 
-        Task<Device> GetDeviceAsync(string name);
+        Task<Device> GetDeviceAsync(int deviceId);
 
         Task PostDevice(Device device);
 
+        Task<Register> SetApproved(bool app, int registerId);
+
+        Task<IEnumerable<Register>> GetRequestsAsync(int userId);
+
+        Task<Register> GetSubscriptionAsync(int registerId);
+
+        Task<Device> DeleteDeviceAsync(int deviceId);
     }
 }

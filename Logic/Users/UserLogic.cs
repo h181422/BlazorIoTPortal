@@ -17,12 +17,14 @@ namespace Logic.Users
         {
             var registers = _dao.GetSubscribedDevices(userId);
             List<Device> devices = new List<Device>();
+            return devices;
             for (int i = 0; i < registers.Count; i++)
             {
                 var register = registers[i];
                 var device = register.Dev;
                 devices.Add(device);
             }
+            // NEED TO FIX!!!!
             return devices;
         }
 

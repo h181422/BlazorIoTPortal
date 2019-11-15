@@ -1,60 +1,51 @@
-﻿@page "/profile"
+﻿@page  "/"
+@page "/profile"
 @inject IUserApi UserApi
 @layout Shared.MainLayout
 
 <h3>Profile</h3>
 
+@if (user == null) {
+<h2>Loading...</h2>
+}
+else {
 <div id="ticket-list">
     <table>
         <tr>
             <td>
-                <output>Email: </output>
+                <h2>Email: </h2>
             </td>
             <td>
-                <output>@user.Email</output>
+                <h3>@user.Email</h3>
             </td>
         </tr>
         <tr>
             <td>
-                <output>Username: </output>
+                <h2>Username: </h2>
             </td>
             <td>
-                <output>@user.Username</output>
+                <h3>@user.Username</h3>
             </td>
         </tr>
         <tr>
             <td>
-                <output>Passoword: </output>
+                <h2>Passoword: </h2>
             </td>
             <td>
-                <output>*******</output>
+                <h3>*******</h3>
             </td>
         </tr>
-        <tr>
-            <td>
-                <output>Nr. own devices: </output>
-            </td>
-            <td>
-                <output>@user.OwnDevices.Count()</output>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <output>Nr. subscribed devices: </output>
-            </td>
-            <td>
-                <output>@user.SubscribedDevices.Count()</output>
-            </td>
-        </tr>
+
     </table>
-    </div>
-    @code {
+</div>
+}
+@code {
 
-        private IoTUser user { get; set; }
+    private IoTUser user { get; set; }
 
-        protected override async Task OnInitializedAsync()
-        {
-            user = await UserApi.GetUserAsync(0);
+    protected override async Task OnInitializedAsync()
+    {
+        user = await UserApi.GetUserAsync(0);
 
-        }
     }
+}

@@ -31,7 +31,7 @@
         </div>
         <ValidationSummary />
 
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <button type="submit" class="btn btn-primary" onclick="location.href = '/';">Submit</button>
     </EditForm>
 
 </div>
@@ -41,21 +41,21 @@
 
     protected override async Task OnInitializedAsync()
     {
-        //Hover funksjonnavnet for å se hva denne gjør
-        throw new NotImplementedException();
+
     }
 
     private async Task HandleValidSubmit()
     {
-        var device = await DeviceApi.GetDeviceAsync(Device.Name);
-        if (device != null)
+        // Current users ID
+        System.Diagnostics.Debug.WriteLine("Device id: " +Device.Id);
+        var oldDevice = await DeviceApi.GetDeviceAsync(Device.Id);
+        if (oldDevice.Id == Device.Id)
         {
             //Use Javascript
-            await JsRuntime.InvokeAsync<object>
-    ("IoTPortal.alert", "Sorry, this name is taken");
-    return;
-    }
+            await JsRuntime.InvokeAsync<object>("IoTPortal.alert", "Sorry, this name is taken");
+            return;
+        }
 
-    await DeviceApi.PostDevice(Device);
+        await DeviceApi.PostDevice(Device);
     }
-    }
+}

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization.Formatters;
 using IoTPortal.Model;
+using Microsoft.EntityFrameworkCore;
 
 namespace Data.DAO.Users
 {
@@ -12,9 +13,8 @@ namespace Data.DAO.Users
         {
             using (var db = new DataContext())
             {
-                
+                return db.Users.FirstOrDefault(x => x.Id == userId)?.SubscribedDevices;
             }
-            throw new NotImplementedException();
         }
 
         public IoTUser GetUser(int userId)
@@ -59,8 +59,12 @@ namespace Data.DAO.Users
         {
             using (var db = new DataContext())
             {
+                db.Database.BeginTransaction();
+                db.Database.ExecuteSqlCommand("SET IDENTITY_INSERT Users ON");
                 db.Users.Add(user);
                 db.SaveChanges();
+                db.Database.ExecuteSqlCommand("SET IDENTITY_INSERT Users OFF");
+                db.Database.CommitTransaction();  
             }
         }
     }

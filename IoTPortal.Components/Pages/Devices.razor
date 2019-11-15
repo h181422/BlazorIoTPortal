@@ -1,5 +1,4 @@
-﻿@page "/"
-@page "/devices"
+﻿@page "/devices"
 @inject IDeviceApi DeviceApi
 @layout Shared.MainLayout
 
@@ -25,17 +24,37 @@
                     <DeviceCard Device="@device" />
                 }
             </div>
+            if (requests.Count() == 0)
+            {
+                <h3>No requests for your devices</h3>
+            }
+            else
+            {
+                <h3>Requests for devices:</h3>
+                <div class="row">
+                    @foreach (var register in requests)
+                    {
+                        <RequestRow Register="@register" />
+                    }
+                </div>
+            }
         }
     }
 </div>
 
 
+
 @code {
     private IEnumerable<Device> allDevices { get; set; }
+
+    private IEnumerable<Register> requests { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
         allDevices = await DeviceApi.GetDevicesAsync();
+        requests = await DeviceApi.GetRequestsAsync(0);
+        System.Diagnostics.Debug.WriteLine("How many requsts: " + requests.Count());
+
     }
 
 }

@@ -12,8 +12,10 @@ namespace IoTPortal.Client
         {
             //Dependency injection
             services.AddSingleton<IDeviceApi, DeviceApi>();
+            services.AddSingleton<IUserApi, UserApi>();
+
         }
-            
+
         public void Configure(IComponentsApplicationBuilder app)
         {
             app.AddComponent<App>("app");
