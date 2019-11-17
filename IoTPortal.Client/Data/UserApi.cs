@@ -1,5 +1,6 @@
 ﻿using IoTPortal.Model;
 using System;
+using System.Diagnostics;
 using System.Net.Http;
 
 namespace IoTPortal.Client.Data
@@ -8,7 +9,8 @@ namespace IoTPortal.Client.Data
     {
         public UserApi(HttpClient client)
         {
-            client.BaseAddress = new Uri("http://localhost:5000/api/");
+            if(client.BaseAddress != new Uri("http://localhost:5000/api/"))
+                client.BaseAddress = new Uri("http://localhost:5000/api/");
             Client = client;
         }
     }

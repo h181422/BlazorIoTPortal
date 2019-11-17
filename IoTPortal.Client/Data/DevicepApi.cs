@@ -8,7 +8,8 @@ namespace IoTPortal.Client.Data
     {
         public DeviceApi(HttpClient client)
         {
-            client.BaseAddress = new Uri("http://localhost:5000/api/");
+            if (client.BaseAddress != new Uri("http://localhost:5000/api/"))
+                client.BaseAddress = new Uri("http://localhost:5000/api/");
             Client = client;
         }
     }
