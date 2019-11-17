@@ -53,9 +53,7 @@
     protected override async Task OnInitializedAsync()
     {
         allDevices = await DeviceApi.GetDevicesAsync();
-        requests = await DeviceApi.GetRequestsAsync(0);
-        System.Diagnostics.Debug.WriteLine("How many requsts: " + requests.Count());
-
+        requests = await DeviceApi.GetRequestsAsync(1);
     }
 
 }

@@ -4,7 +4,7 @@
 @inject  IDeviceApi DeviceApi
 
     <div class="card">
-        <DeviceImage DeviceImageLink="@GetDeviceLink(Device.Name)" />
+        <DeviceImage DeviceImageLink="@GetDeviceLink()" />
         <div class="card-body">
             <h5 class="card-title">@Device.Name</h5>
             <p class="card-text">
@@ -14,6 +14,7 @@
         <ul class="list-group list-group-flush">
             <li class="list-group-item"><a href="@Device.Link">Visit device!</a></li>
         </ul>
+        <button type="button" @onclick="setPublished">Publish/Unpublish</button>
         <button type="button" @onclick="deleteDevice">Delete</button>
 
     </div>
@@ -22,10 +23,16 @@
     [Parameter]
     public Device Device { get; set; }
 
-    private string GetDeviceLink(string deviceName) => Device.ImageLink;
+    private string GetDeviceLink() => Device.ImageLink;
 
     private async Task deleteDevice()
     {
         Device = await DeviceApi.DeleteDeviceAsync(Device.Id);
+    }
+
+    private async Task setPublished()
+    {
+        bool published = Device.Published;
+        Device = await DeviceApi.SetPublishedAsync(Device.Id, !published);
     }
 }

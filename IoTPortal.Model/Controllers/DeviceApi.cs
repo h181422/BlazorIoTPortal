@@ -98,5 +98,26 @@ namespace IoTPortal.Model
             return register;
         }
 
+        public async Task<Device> SetPublishedAsync(int deviceId, bool isPublished)
+        {
+            var response = await client.GetAsync($"device/publish/{deviceId}/{isPublished}");
+            var devicesJson = await response.Content.ReadAsStringAsync();
+            var device = JsonSerializer.Deserialize<Device>(devicesJson, new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true,
+            });
+            return device;
+        }
+
+        public async Task<Device> SubscribeToDeviceAsync(int userId, int deviceId)
+        {
+            var response = await client.GetAsync($"device/subscribe/{userId}/{deviceId}");
+            var devicesJson = await response.Content.ReadAsStringAsync();
+            var device = JsonSerializer.Deserialize<Device>(devicesJson, new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true,
+            });
+            return device;
+        }
     }
 }

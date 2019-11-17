@@ -5,6 +5,7 @@ using IoTPortal.Model;
 using System.Linq;
 using System;
 using Logic.Users;
+using System.Text;
 
 namespace IoTPortal.UI.Server.Controllers
 {
@@ -55,11 +56,19 @@ namespace IoTPortal.UI.Server.Controllers
         }
 
         [HttpGet]
-        [Route("subscribed/{userId}")]
-        public IEnumerable<Device> GetSubscribedDevices([FromRoute] string userId)
+        [Route("subscribedDevs/{userId}")]
+        public IActionResult GetSubscribedDevices([FromRoute] string userId)
         {
             int id = int.Parse(userId);
-            return _userLogic.GetSubscribedDevices(id);
+            return Ok(_userLogic.GetSubscribedDevices(id));
+        }
+
+        [HttpGet]
+        [Route("unsubscribe/{userId}/{deviceId}")]
+        public IActionResult Unsubscribe([FromRoute] int userId, int deviceId)
+        {
+            return Ok(_userLogic.Unsubscribe(userId, deviceId));
+
         }
     }
 }

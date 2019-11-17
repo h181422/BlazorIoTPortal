@@ -73,7 +73,7 @@ namespace IoTPortal.UI.Server.Controllers
         [Route( "approve/{app}/{registerId}")]
         public IActionResult SetApprove([FromRoute] bool app, int registerId)
         {
-            return Ok(_deviceLogic.SetApprove(app, registerId));
+            return Ok(_deviceLogic.SetApproved(app, registerId));
         }
 
         [HttpGet]
@@ -87,8 +87,8 @@ namespace IoTPortal.UI.Server.Controllers
         [Route("register/{registerId}")]
         public IActionResult GetSubscription([FromRoute] int registerId)
         {
-            _deviceLogic.GetSubscription(registerId);
-            return Ok();
+            return Ok(_deviceLogic.GetSubscription(registerId));
+           
         }
 
         [HttpGet]
@@ -96,6 +96,22 @@ namespace IoTPortal.UI.Server.Controllers
         public IActionResult DeleteDevice([FromRoute] int deviceId)
         {
             return Ok(_deviceLogic.RemoveDevice(deviceId));
+        }
+
+        [HttpGet]
+        [Route("subscribe/{userId}/{deviceId}")]
+        public IActionResult SubscribeToDevice([FromRoute] int userId, int deviceId)
+        {
+            return Ok(_deviceLogic.SubscribeToDevice(userId, deviceId));
+            
+        }
+
+        [HttpGet]
+        [Route("publish/{deviceId}/{isPublished}")]
+        public IActionResult SetPublished([FromRoute] int deviceId, bool isPublished)
+        {
+            return Ok(_deviceLogic.SetPublished(deviceId, isPublished));
+
         }
     }
 }

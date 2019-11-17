@@ -54,15 +54,25 @@ namespace IoTPortal.Model
             return user;
         }
 
-        public async Task<IEnumerable<Device>> GetSubscribedDevicesAsync(int userId)
+        public async Task<IEnumerable<Register>> GetSubscribedDevicesAsync(int userId)
         {
-            var response = await client.GetAsync($"user/subscribed/{userId}");
-            var devicesJson = await response.Content.ReadAsStringAsync();
-            var devices = JsonSerializer.Deserialize<List<Device>>(devicesJson, new JsonSerializerOptions
+            var response = await client.GetAsync($"user/subscribedDevs/{userId}");
+            var registerJson = await response.Content.ReadAsStringAsync();
+            var registers = JsonSerializer.Deserialize<List<Register>>(registerJson, new JsonSerializerOptions
             {
                 PropertyNameCaseInsensitive = true,
             });
-            return devices;
+            return registers;
+        }
+        public async Task<bool> Unsubscribe(int userId, int deviceId)
+        {
+            var response = await client.GetAsync($"user/unsubscribe/{userId}/{deviceId}/");
+            var boolJson = await response.Content.ReadAsStringAsync();
+            var bol = JsonSerializer.Deserialize<bool>(boolJson, new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true,
+            });
+            return bol;
         }
     }
 }

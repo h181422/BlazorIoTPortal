@@ -4,7 +4,11 @@
 
 <div class="card">
     <div class="card-body">
-        <h5 class="card-title">Register ID: @Register.Id</h5>  
+        <h5 class="card-title">Request from: @Register.User.Username</h5>
+        <h5 class="card-title">Device: @Register.Dev.Name</h5>
+        <p class="card-text">
+            <span class="highlight">Request is currently @(Register.Approved ? "" : "not ") approved</span>
+        </p>
         <button type="button" @onclick="invertApprove">Approve/Revoke</button>
     </div>
 </div>

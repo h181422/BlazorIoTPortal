@@ -13,7 +13,11 @@ namespace Data.DAO.Users
         {
             using (var db = new DataContext())
             {
-                return db.Users.FirstOrDefault(x => x.Id == userId)?.SubscribedDevices;
+                var registers = db.Users.Include(b => b.SubscribedDevices).FirstOrDefault(x => x.Id == userId)?.SubscribedDevices.ToList();
+                if (registers == null)
+                    return new List<Register>();
+                return registers;
+
             }
         }
 
@@ -67,5 +71,19 @@ namespace Data.DAO.Users
                 db.Database.CommitTransaction();  
             }
         }
+        public bool Unsubscribe(int userId, int deviceId)
+        {
+            using (var db = new DataContext())
+            {
+                var register = db.Registrations.FirstOrDefault(x => x.Dev.Id == deviceId && x.User.Id == userId);
+                if (register == null)
+                    return false;
+                db.Registrations.Remove(register);
+                db.SaveChanges();
+            }
+
+            return true;
+        }
     }
+     
 }
