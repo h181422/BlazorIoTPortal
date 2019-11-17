@@ -6,15 +6,13 @@ using System.Threading.Tasks;
 
 namespace IoTPortal.Model
 {
-    public abstract class DeviceApiBase : IDeviceApi
+    public class DeviceApi : IDeviceApi
     {
-        private HttpClient client;
-
-        protected HttpClient Client
+        private readonly HttpClient _httpClient;
+        public DeviceApi(HttpClient httpClient)
         {
-            set => client = value;
+            _httpClient = httpClient;
         }
-
 
         public async Task<Device> GetDeviceAsync(string name)
         {
@@ -23,7 +21,7 @@ namespace IoTPortal.Model
 
         public async Task<IEnumerable<Device>> GetDevicesAsync()
         {
-            var response = await client.GetAsync($"device/all");
+            var response = await _httpClient.GetAsync($"device/all");
             var devicesJson = await response.Content.ReadAsStringAsync();
             var devices = JsonSerializer.Deserialize<List<Device>>(devicesJson, new JsonSerializerOptions
             {
@@ -34,7 +32,7 @@ namespace IoTPortal.Model
 
         public async Task<IEnumerable<Device>> GetPublishedDevicesAsync(string searchTerm)
         {
-            var response = await client.GetAsync($"device/search/{searchTerm}");
+            var response = await _httpClient.GetAsync($"device/search/{searchTerm}");
             var devicesJson = await response.Content.ReadAsStringAsync();
             var devices = JsonSerializer.Deserialize<List<Device>>(devicesJson, new JsonSerializerOptions
             {
@@ -46,7 +44,7 @@ namespace IoTPortal.Model
         public async Task PostDevice(Device device)
         {
             var content = new StringContent(JsonSerializer.Serialize(device), Encoding.UTF8, "application/json");
-            var result = await client.PostAsync($"device", content);
+            var result = await _httpClient.PostAsync($"device", content);
         }
     }
 }

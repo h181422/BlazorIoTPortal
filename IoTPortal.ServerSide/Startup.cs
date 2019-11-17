@@ -10,6 +10,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using IoTPortal.ServerSide.Data;
+using DeviceApi = IoTPortal.ServerSide.Data.DeviceApi;
+using UserApi = IoTPortal.ServerSide.Data.UserApi;
 
 
 namespace IoTPortal.ServerSide
