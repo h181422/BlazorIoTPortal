@@ -93,5 +93,7 @@ namespace Data.DAO.Users
                 var user = db.Users.Include(b => b.OwnDevices).Include(b => b.SubscribedDevices).FirstOrDefault(u => u.Username.Equals(username) && u.Password.Equals(password));
                 return user;
             }
-        }     
+        }
+    }
+     
 }

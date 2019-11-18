@@ -20,7 +20,12 @@ namespace Logic.Devices
 
         public List<Device> GetDevicesFromUser(int userId, bool checkPublished = false, bool published = true)
         {
-            return _dao.GetDevicesFromUser(userId, checkPublished, published);
+            var devices = _dao.GetDevicesFromUser(userId, checkPublished, published);
+            if (devices == null)
+            {
+                return new List<Device>();
+            }
+            return devices;
         }
 
         public List<Device> GetDevices(bool checkPublished = false, bool published = true)

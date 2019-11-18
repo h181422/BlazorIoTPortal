@@ -19,6 +19,10 @@ namespace Logic.Users
         public List<Register> GetSubscribedDevices(int userId)
         {
             var registers = _dao.GetSubscribedDevices(userId);
+            if (registers == null)
+            {
+                return new List<Register>();
+            }
             return registers;
         }
 
