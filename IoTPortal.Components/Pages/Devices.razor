@@ -52,7 +52,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        allDevices = await DeviceApi.GetDevicesAsync();
+        allDevices = await DeviceApi.GetDevicesFromUser(1);
         requests = await DeviceApi.GetRequestsAsync(1);
     }
 

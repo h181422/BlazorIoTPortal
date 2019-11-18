@@ -23,6 +23,10 @@ namespace IoTPortal.UI.Server.Controllers
         public IEnumerable<Device> GetDevices() => _deviceLogic.GetDevices("", false, true);
 
         [HttpGet]
+        [Route("user/{userId}")]
+        public IEnumerable<Device> GetDevicesFromUser(int userId) => _deviceLogic.GetDevicesFromUser(userId);
+
+        [HttpGet]
         [Route("{deviceName}")]
         public IActionResult GetDevice([FromRoute] string deviceName)
         {

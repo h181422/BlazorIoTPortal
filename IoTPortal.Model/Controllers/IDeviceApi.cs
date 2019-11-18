@@ -6,6 +6,7 @@ namespace IoTPortal.Model
     public interface IDeviceApi
     {
         Task<IEnumerable<Device>> GetDevicesAsync();
+        Task<IEnumerable<Device>> GetDevicesFromUser(int userId);
 
         Task<IEnumerable<Device>> GetPublishedDevicesAsync(string searchTerm);
 
@@ -24,6 +25,8 @@ namespace IoTPortal.Model
         Task<Device> SubscribeToDeviceAsync(int userId, int deviceId);
 
         Task<Device> SetPublishedAsync(int deviceId, bool isPublished);
+
+
 
     }
 }

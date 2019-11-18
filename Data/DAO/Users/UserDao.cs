@@ -14,9 +14,10 @@ namespace Data.DAO.Users
             using (var db = new DataContext())
             {
                 var registers = db.Users.Include(b => b.SubscribedDevices).FirstOrDefault(x => x.Id == userId)?.SubscribedDevices.ToList();
-                if (registers == null)
+                var list = db.Users.Include(b => b.SubscribedDevices).ThenInclude(SubscribedDevices => SubscribedDevices.Dev).FirstOrDefault(x => x.Id == userId).SubscribedDevices;
+                if (list == null)
                     return new List<Register>();
-                return registers;
+                return list;
 
             }
         }

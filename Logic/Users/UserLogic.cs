@@ -14,6 +14,8 @@ namespace Logic.Users
             _dao = new UserDao();
         }
 
+
+
         public List<Register> GetSubscribedDevices(int userId)
         {
             var registers = _dao.GetSubscribedDevices(userId);

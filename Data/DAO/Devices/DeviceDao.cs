@@ -121,7 +121,7 @@ namespace Data.DAO.Devices
             using (var db = new DataContext())
             {
                 System.Diagnostics.Debug.WriteLine("Bool: " + app);
-                var register = db.Registrations.FirstOrDefault(x => x.Id == registerId);
+                var register = db.Registrations.Include(b => b.User).Include(b => b.Dev).FirstOrDefault(x => x.Id == registerId);
                 register.Approved = app;
                 db.SaveChanges();
                 return register;
