@@ -90,10 +90,8 @@ namespace Data.DAO.Users
         {
             using (var db = new DataContext())
             {
-                var user = db.Users.FirstOrDefault(u => u.Username.Equals(username) && u.Password.Equals(password));
+                var user = db.Users.Include(b => b.OwnDevices).Include(b => b.SubscribedDevices).FirstOrDefault(u => u.Username.Equals(username) && u.Password.Equals(password));
                 return user;
             }
-        }
-    }
-     
+        }     
 }
