@@ -45,7 +45,8 @@ namespace Logic.Devices
 
         public Register SetApproved(bool app, int registerId)
         {
-            return _dao.SetApproved(app, registerId);
+            var register =_dao.SetApproved(app, registerId);
+            return register;
         }
 
         public List<Register> GetRequests(int userId)

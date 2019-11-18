@@ -35,6 +35,5 @@
     protected override async Task OnInitializedAsync()
     {
         allRegisters = await UserApi.GetSubscribedDevicesAsync(1);
-        System.Diagnostics.Debug.WriteLine(allRegisters.ElementAt(0).Id);
     }
 }

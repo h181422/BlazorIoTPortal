@@ -51,5 +51,10 @@ namespace Logic.Users
         {
             return _dao.Unsubscribe(userId, deviceId);
         }
+
+        public IoTUser ValidateLogin(string username, string password)
+        {
+            return _dao.ValidateLogin(username, password);
+        }
     }
 }

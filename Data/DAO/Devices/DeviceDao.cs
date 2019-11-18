@@ -151,7 +151,7 @@ namespace Data.DAO.Devices
                 var device = GetDevice(deviceId);
                 var user = db.Users.FirstOrDefault(x => x.Id == 1);
                 var register = new Register();
-                register.Id = getNextRegisterId();
+                register.Id = GetNextRegisterId();
                 register.Approved = false;
                 register.Dev = device;
                 register.User = user;
@@ -167,7 +167,7 @@ namespace Data.DAO.Devices
             }
         }
 
-        public int getNextRegisterId()
+        public int GetNextRegisterId()
         {
             using (var db = new DataContext())
             {
