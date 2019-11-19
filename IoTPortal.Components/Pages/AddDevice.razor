@@ -4,6 +4,7 @@
 @inject NavigationManager NavigationManager
 @layout Shared.MainLayout
 @using System.Linq
+@using IoTPortal.Client.Data
 
 <div class="book">
     <h1>Add device</h1>
@@ -57,7 +58,7 @@
             return;
         }
 
-        await DeviceApi.PostDevice(Device);
+        await DeviceApi.PostDevice(Device, AuthData.Id);
         NavigationManager.NavigateTo("/devices");
 
     }

@@ -1,6 +1,8 @@
 ﻿@page "/subscriptions"
 @inject IUserApi UserApi
 @layout Shared.MainLayout
+@using IoTPortal.Client.Data
+
 
 <h1>Subscribed devices</h1>
 
@@ -36,7 +38,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        allRegisters = await UserApi.GetSubscribedDevicesAsync(1);
+        allRegisters = await UserApi.GetSubscribedDevicesAsync(AuthData.Id);
         Self = this;
     }
 

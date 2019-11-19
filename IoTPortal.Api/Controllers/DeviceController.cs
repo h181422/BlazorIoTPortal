@@ -70,9 +70,9 @@ namespace IoTPortal.UI.Server.Controllers
         }
 
         [HttpPost]
-        public IActionResult PostDevice([FromBody] Device device)
+        public IActionResult PostDevice([FromBody] Device device, int userId)
         {
-            _deviceLogic.SaveDevice(device);
+            _deviceLogic.SaveDevice(device, userId);
             return Ok();
         }
 

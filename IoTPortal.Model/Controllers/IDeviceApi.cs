@@ -12,7 +12,7 @@ namespace IoTPortal.Model
 
         Task<Device> GetDeviceAsync(int deviceId);
 
-        Task PostDevice(Device device);
+        Task PostDevice(Device device, int userId);
 
         Task<Register> SetApproved(bool app, int registerId);
 

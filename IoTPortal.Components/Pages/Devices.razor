@@ -2,6 +2,8 @@
 @page "/devices"
 @inject IDeviceApi DeviceApi
 @layout Shared.MainLayout
+@using IoTPortal.Client.Data
+
 
 <style>
     .button {
@@ -68,8 +70,8 @@
 
     protected override async Task OnInitializedAsync()
     {
-        allDevices = await DeviceApi.GetDevicesFromUser(1);
-        requests = await DeviceApi.GetRequestsAsync(1);
+        allDevices = await DeviceApi.GetDevicesFromUser(AuthData.Id);
+        requests = await DeviceApi.GetRequestsAsync(AuthData.Id);
         Self = this;
     }
 

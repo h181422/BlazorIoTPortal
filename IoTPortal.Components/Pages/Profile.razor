@@ -1,6 +1,7 @@
 ﻿@page "/profile"
 @inject IUserApi UserApi
 @layout Shared.MainLayout
+@using IoTPortal.Client.Data
 
 <h3>Profile</h3>
 
@@ -47,7 +48,7 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        user = await UserApi.GetUserAsync(1);
+        user = await UserApi.GetUserAsync(AuthData.Id);
     }
 
 }

@@ -6,7 +6,7 @@ namespace Logic.Devices
     public interface IDeviceLogic
     {
         bool RemoveDevice(int deviceId);
-        void SaveDevice(Device device);
+        void SaveDevice(Device device, int userId);
         List<Device> GetDevicesFromUser(int userId, bool checkPublished = false, bool published = true);
         List<Device> GetDevices(bool checkPublished = false, bool published = true);
         Device GetDevice(int deviceId, bool checkPublished = false, bool published = true);

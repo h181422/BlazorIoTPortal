@@ -10,15 +10,14 @@ namespace Data.DAO.Devices
     public class DeviceDao : IDeviceDao
     {
 
-        public void SaveDevice(Device device)
+        public void SaveDevice(Device device, int userId)
         {
             using (var db = new DataContext())
             {
                 db.Database.BeginTransaction();
                 db.Database.ExecuteSqlCommand("SET IDENTITY_INSERT Devices ON");
-                // CURRENT USER HERE
                 db.Devices.Add(device);
-                var user = db.Users.Where(b => b.Id == 1).Include(b => b.OwnDevices).FirstOrDefault();
+                var user = db.Users.Where(b => b.Id == userId).Include(b => b.OwnDevices).FirstOrDefault();
                 user.OwnDevices.Add(device);
                 db.SaveChanges();
                 db.Database.ExecuteSqlCommand("SET IDENTITY_INSERT Devices OFF");

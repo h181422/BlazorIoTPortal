@@ -33,6 +33,7 @@ namespace IoTPortal.Model
 
         public void Logout()
         {
+            AuthData.Id = -1;
             AuthData.Username = "";
             AuthData.Password = "";
         }
@@ -41,6 +42,7 @@ namespace IoTPortal.Model
         {
             string jsonContent = JsonSerializer.Serialize(new IoTUser()
             {
+                
                 Username = username,
                 Password = password,
                 Email = "",
@@ -64,6 +66,7 @@ namespace IoTPortal.Model
                 AuthData.Username = username;
                 AuthData.Password = password;
             }
+            AuthData.Id = user.Id;
             return user;
         }
 
@@ -113,7 +116,14 @@ namespace IoTPortal.Model
 
         public async Task<IEnumerable<Register>> GetSubscribedDevicesAsync(int userId)
         {
-            var response = await client.GetAsync($"user/subscribedDevs/{userId}");
+            //var response = await client.GetAsync($"user/subscribedDevs/{userId}");
+            var request = new HttpRequestMessage(HttpMethod.Get, _baseAddress + $"user/subscribedDevs/{userId}/");
+            request.Headers.Accept.Clear();
+            request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            var byteArray = Encoding.ASCII.GetBytes($"{AuthData.Username}:{AuthData.Password}");
+            request.Headers.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
+            var response = await client.SendAsync(request, CancellationToken.None);
+
             var registerJson = await response.Content.ReadAsStringAsync();
             var registers = JsonSerializer.Deserialize<List<Register>>(registerJson, new JsonSerializerOptions
             {

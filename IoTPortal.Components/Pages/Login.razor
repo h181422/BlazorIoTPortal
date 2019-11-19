@@ -2,6 +2,7 @@
 @page "/login"
 @inject IJSRuntime JsRuntime
 @inject IUserApi UserApi
+@inject NavigationManager NavigationManager
 @using System.Linq
 @using IoTPortal.Model.Services
 @using Microsoft.AspNetCore.Authorization
@@ -43,7 +44,6 @@
         <tr>
             <td>
                 <button class="button" type="button" @onclick="HandleValidSubmit">Login</button>
-                <a class="button" href="/devices">Login</a>
             </td>
             <td>
                 <a class="button" href="/signUp">Sign up</a>
@@ -72,6 +72,9 @@
         {
             //await WriteCookieAsync("authdata", username + ":" + password, 30);
             UserApi.SaveAuth(username, password);
+            NavigationManager.NavigateTo("/devices");
+
+
         }
     }
 

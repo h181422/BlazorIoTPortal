@@ -1,6 +1,8 @@
 ﻿@using IoTPortal.Model
 @layout Shared.MainLayout
 @inject IUserApi UserApi
+@using IoTPortal.Client.Data
+
 
 <div class="card">
     <DeviceImage DeviceImageLink="@GetDeviceLink()" />
@@ -29,7 +31,7 @@
     private async Task unsubscribe()
     {
         // Give ID of current user
-        bool hasUnsubscribed = await UserApi.Unsubscribe(1, Register.Dev.Id);
+        bool hasUnsubscribed = await UserApi.Unsubscribe(AuthData.Id, Register.Dev.Id);
         if (hasUnsubscribed)
         {
             Subscribed.Update(Register);
