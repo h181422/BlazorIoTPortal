@@ -2,6 +2,7 @@
 @using IoTPortal.Model
 @layout Shared.MainLayout
 @inject IDeviceApi DeviceApi
+@inject NavigationManager NavigationManager
 
 <div class="card">
     <DeviceImage DeviceImageLink="@GetDeviceLink(Device.Name)" />
@@ -24,5 +25,7 @@
     private async Task subscribeToDevice()
     {
         Device = await DeviceApi.SubscribeToDeviceAsync(1, Device.Id);
+        NavigationManager.NavigateTo("/subscriptions");
+
     }
 }
