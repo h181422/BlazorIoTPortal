@@ -13,6 +13,7 @@ namespace IoTPortal.Model
     public abstract class UserApiBase : IUserApi
     {
         private HttpClient client;
+        private string _baseAddress = "http://localhost:5000/api/";
 
         protected HttpClient Client
         {
@@ -29,13 +30,30 @@ namespace IoTPortal.Model
             });
             return users;
         }
-    
+
+        public void Logout()
+        {
+            AuthData.Username = "";
+            AuthData.Password = "";
+        }
+
         public async Task<IoTUser> Login(string username, string password)
         {
-            var content = new StringContent(JsonSerializer.Serialize(new IoTUser(){Username = username, Password = password, Email = "", Id = 0,
-                    OwnDevices = new List<Device>(), SubscribedDevices = new List<Register>()}),
-                Encoding.UTF8, "application/json");
-            var response = await client.PostAsync($"user/login", content);
+            string jsonContent = JsonSerializer.Serialize(new IoTUser()
+            {
+                Username = username,
+                Password = password,
+                Email = "",
+                Id = 0,
+                OwnDevices = new List<Device>(),
+                SubscribedDevices = new List<Register>()
+            });
+            var request = new HttpRequestMessage(HttpMethod.Post, _baseAddress + $"user/login");
+            request.Headers.Accept.Clear();
+            request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            request.Content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
+            var response = await client.SendAsync(request, CancellationToken.None);
+
             var userJson = await response.Content.ReadAsStringAsync();
             var user = JsonSerializer.Deserialize<IoTUser>(userJson, new JsonSerializerOptions
             {
@@ -56,7 +74,7 @@ namespace IoTPortal.Model
         public async Task PostUser(IoTUser user)
         {
             string jsonContent = JsonSerializer.Serialize(user);
-            var request = new HttpRequestMessage(HttpMethod.Post, client.BaseAddress + $"user");
+            var request = new HttpRequestMessage(HttpMethod.Post, _baseAddress + $"user");
             request.Headers.Accept.Clear();
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             var byteArray = Encoding.ASCII.GetBytes($"{AuthData.Username}:{AuthData.Password}");
@@ -67,13 +85,11 @@ namespace IoTPortal.Model
 
         public async Task<IoTUser> GetUserAsync(int userId)
         {
-            string jsonContent = "";
-            var request = new HttpRequestMessage(HttpMethod.Get, client.BaseAddress + $"user/{userId}");
+            var request = new HttpRequestMessage(HttpMethod.Get, _baseAddress + $"user/{userId}");
             request.Headers.Accept.Clear();
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             var byteArray = Encoding.ASCII.GetBytes($"{AuthData.Username}:{AuthData.Password}");
             request.Headers.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
-            request.Content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
             var response = await client.SendAsync(request, CancellationToken.None);
 
             var usersJson = await response.Content.ReadAsStringAsync();
@@ -107,13 +123,11 @@ namespace IoTPortal.Model
         }
         public async Task<bool> Unsubscribe(int userId, int deviceId)
         {
-            string jsonContent = "";
-            var request = new HttpRequestMessage(HttpMethod.Get, client.BaseAddress + $"user/unsubscribe/{userId}/{deviceId}/");
+            var request = new HttpRequestMessage(HttpMethod.Get, _baseAddress + $"user/unsubscribe/{userId}/{deviceId}/");
             request.Headers.Accept.Clear();
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             var byteArray = Encoding.ASCII.GetBytes($"{AuthData.Username}:{AuthData.Password}");
             request.Headers.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
-            request.Content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
             var response = await client.SendAsync(request, CancellationToken.None);
 
             var boolJson = await response.Content.ReadAsStringAsync();

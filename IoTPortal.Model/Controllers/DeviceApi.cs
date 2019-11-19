@@ -13,6 +13,7 @@ namespace IoTPortal.Model
     public abstract class DeviceApiBase : IDeviceApi
     {
         private HttpClient client;
+        private string _baseAddress = "http://localhost:5000/api/";
 
         protected HttpClient Client
         {
@@ -54,13 +55,11 @@ namespace IoTPortal.Model
 
         public async Task<IEnumerable<Device>> GetDevicesFromUser(int userId)
         {
-            string jsonContent = "";
-            var request = new HttpRequestMessage(HttpMethod.Get, client.BaseAddress+ $"device/user/{userId}");
+            var request = new HttpRequestMessage(HttpMethod.Get, _baseAddress+ $"device/user/{userId}");
             request.Headers.Accept.Clear();
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             var byteArray = Encoding.ASCII.GetBytes($"{AuthData.Username}:{AuthData.Password}");
             request.Headers.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
-            request.Content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
             var response = await client.SendAsync(request, CancellationToken.None);
 
             var devicesJson = await response.Content.ReadAsStringAsync();
@@ -84,13 +83,11 @@ namespace IoTPortal.Model
 
         public async Task<IEnumerable<Register>> GetRequestsAsync(int userId)
         {
-            string jsonContent = "";
-            var request = new HttpRequestMessage(HttpMethod.Get, client.BaseAddress + $"device/request/{userId}");
+            var request = new HttpRequestMessage(HttpMethod.Get, _baseAddress + $"device/request/{userId}");
             request.Headers.Accept.Clear();
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             var byteArray = Encoding.ASCII.GetBytes($"{AuthData.Username}:{AuthData.Password}");
             request.Headers.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
-            request.Content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
             var response = await client.SendAsync(request, CancellationToken.None);
 
             var registerJson = await response.Content.ReadAsStringAsync();

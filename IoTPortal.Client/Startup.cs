@@ -13,7 +13,6 @@ namespace IoTPortal.Client
         {
             services.AddSingleton<IDeviceApi, DeviceApi>();
             services.AddSingleton<IUserApi, UserApi>();
-            services.AddSingleton<IUserApi, UserApi>();
 
             //services.AddScoped<AuthenticationStateProvider, CustomAuthStateProvider>();
         }
