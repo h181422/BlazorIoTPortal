@@ -50,8 +50,16 @@ namespace Logic.Devices
 
         public Register SetApproved(bool app, int registerId)
         {
-            var register =_dao.SetApproved(app, registerId);
+
+            var register = _dao.SetApproved(app, registerId);
+            if (app)
+            {
+                Logic.ServiceBus.SendBus bussen = new Logic.ServiceBus.SendBus();
+                bussen.SendMessage(register);
+            }
             return register;
+
+
         }
 
         public List<Register> GetRequests(int userId)
