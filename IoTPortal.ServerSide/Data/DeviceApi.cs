@@ -4,7 +4,7 @@ using System.Net.Http;
 
 namespace IoTPortal.ServerSide.Data
 {
-    public class DeviceApi : DeviceApiBase
+    public class DeviceApi : Model.DeviceApi
     {
         public DeviceApi(IHttpClientFactory factory)
         {
