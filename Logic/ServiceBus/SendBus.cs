@@ -33,7 +33,7 @@ namespace Logic.ServiceBus
                 TimeToLive = TimeSpan.FromMinutes(2)
             };
           
-            System.Diagnostics.Debug.WriteLine("Sending" + reg.Dev.Name);
+         
             await tc.SendAsync(message);
 
             //var app = new RecvBus();

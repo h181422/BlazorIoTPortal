@@ -64,27 +64,9 @@ namespace Logic.ServiceBus
 
                         dynamic scientist = JsonConvert.DeserializeObject(Encoding.UTF8.GetString(body));
 
-
-                        //Console.ForegroundColor = color;
-                        //lock (Console.Out)
-                        // {
-                        System.Diagnostics.Debug.WriteLine("output3");
                         string name = scientist.test;
-                        System.Diagnostics.Debug.WriteLine(name);
-                        // }
-                        /*
-                        "\t\t\t\tMessage received: \n\t\t\t\t\t\tMessageId = {0}, \n\t\t\t\t\t\tSequenceNumber = {1}, \n\t\t\t\t\t\tEnqueuedTimeUtc = {2}," +
-                        "\n\t\t\t\t\t\tExpiresAtUtc = {5}, \n\t\t\t\t\t\tContentType = \"{3}\", \n\t\t\t\t\t\tSize = {4},  \n\t\t\t\t\t\tContent: [ firstName = {6}, name = {7} ]",
-                        message.MessageId,
-                        message.SystemProperties.SequenceNumber,
-                        message.SystemProperties.EnqueuedTimeUtc,
-                        message.ContentType,
-                        message.Size,
-                        message.ExpiresAtUtc,
-                        scientist.firstName,
-                        scientist.name);
-                        */
-                        //Console.ResetColor();
+                     
+                       
 
                         await receiver.CompleteAsync(message.SystemProperties.LockToken);
                     }
