@@ -12,7 +12,7 @@
     else
     {
         <div class="row">
-            @if (allDevices.Count() == 0)
+            @if (noDevices)
             {
                 <h2>No published devices</h2>
             }
@@ -31,7 +31,7 @@
                         <div class="row">
                             @foreach (var device in allDevices)
                             {
-                                <DeviceCard Device="@device" />
+                                <SearchCard Device="@device" />
                             }
                         </div>
                     </tr>
@@ -44,17 +44,21 @@
 
 @code {
     private IEnumerable<Device> allDevices { get; set; }
-    string searchTerm { get; set; }
+    private bool noDevices { get; set; } = true;
+    private string searchTerm { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
         allDevices = await DeviceApi.GetPublishedDevicesAsync("");
+        if (allDevices.Count() != 0) 
+        {
+            noDevices = false;
+        }
 
     }
 
     protected async Task SearchDevices()
     {
-        System.Diagnostics.Debug.WriteLine("Searchterm: " + searchTerm);
         allDevices = await DeviceApi.GetPublishedDevicesAsync(searchTerm);
     }
 

@@ -1,0 +1,71 @@
+﻿@page "/signUp"
+@inject IJSRuntime JsRuntime
+@inject IUserApi UserApi
+@using System.Linq
+
+    <style>
+        .button {
+            font: bold 16px Arial;
+            text-decoration: none;
+            background-color: #EEEEEE;
+            color: #333333;
+            padding: 2px 6px 2px 6px;
+            border-top: 1px solid #CCCCCC;
+            border-right: 1px solid #333333;
+            border-bottom: 1px solid #333333;
+            border-left: 1px solid #CCCCCC;
+        }
+    </style>
+
+    <div class="book">
+        <h1>IoT Portal - Login</h1>
+
+        <EditForm Model="@User" OnValidSubmit="@HandleValidSubmit">
+
+            <div class="form-group">
+                <label for="Id">Id</label>
+                <InputNumber id="id" class="form-control" @bind-Value="@User.Id" />
+            </div>
+            <div class="form-group">
+                <label for="date">Email</label>
+                <InputText id="email" class="form-control" @bind-Value="@User.Email" />
+                <div class="form-group">
+                    <label for="date">Username</label>
+                    <InputText id="username" class="form-control" @bind-Value="@User.Username" />
+                </div>
+                <div class="form-group">
+                    <label for="date">Password</label>
+                    <InputText id="password" class="form-control" @bind-Value="@User.Password" />
+                </div>
+            </div>
+            <ValidationSummary />
+
+            <button type="submit" class="btn btn-primary">Sign up</button>
+            <a class="button" href="/signUp">Login</a>
+        </EditForm>
+
+    </div>
+
+@code {
+    private IoTUser User { get; set; } = new IoTUser();
+
+    protected override async Task OnInitializedAsync()
+    {
+
+    }
+
+    private async Task HandleValidSubmit()
+    {
+        // Current users ID
+        System.Diagnostics.Debug.WriteLine("User id: " + User.Id);
+        var oldDevice = await UserApi.GetUserAsync(User.Id);
+        if (oldDevice.Id == User.Id)
+        {
+            //Use Javascript
+            await JsRuntime.InvokeAsync<object>("IoTPortal.alert", "Sorry, this name is taken");
+            return;
+        }
+
+        await UserApi.PostUser(User);
+    }
+}

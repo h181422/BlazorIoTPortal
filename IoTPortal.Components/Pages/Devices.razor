@@ -1,7 +1,23 @@
-﻿@page "/"
+﻿
 @page "/devices"
 @inject IDeviceApi DeviceApi
 @layout Shared.MainLayout
+@using IoTPortal.Client.Data
+
+
+<style>
+    .button {
+        font: bold 16px Arial;
+        text-decoration: none;
+        background-color: #EEEEEE;
+        color: #333333;
+        padding: 2px 6px 2px 6px;
+        border-top: 1px solid #CCCCCC;
+        border-right: 1px solid #333333;
+        border-bottom: 1px solid #333333;
+        border-left: 1px solid #CCCCCC;
+    }
+</style>
 
 <h1>Your Devices</h1>
 
@@ -12,7 +28,7 @@
     }
     else
     {
-        <a href="/AddDevice" style="font-size:20px;">Add Device</a>
+        <a class="button" href="/AddDevice" style="font-size:20px;">Add Device</a>
         if (allDevices.Count() == 0)
         {
             <h2>You have no devices :(</h2>
@@ -25,17 +41,43 @@
                     <DeviceCard Device="@device" />
                 }
             </div>
+            if (requests.Count() == 0)
+            {
+                <h3>No requests for your devices</h3>
+            }
+            else
+            {
+                <h3>Requests for devices:</h3>
+                <div class="row">
+                    @foreach (var register in requests)
+                    {
+                        <RequestRow Register="@register" />
+                    }
+                </div>
+            }
         }
     }
 </div>
 
 
+
 @code {
     private IEnumerable<Device> allDevices { get; set; }
 
+    private IEnumerable<Register> requests { get; set; }
+
+    public static Devices Self { get; set; }
+
     protected override async Task OnInitializedAsync()
     {
-        allDevices = await DeviceApi.GetDevicesAsync();
+        allDevices = await DeviceApi.GetDevicesFromUser(AuthData.Id);
+        requests = await DeviceApi.GetRequestsAsync(AuthData.Id);
+        Self = this;
     }
 
+    public static void Update(Device device)
+    {
+        Self.allDevices = Self.allDevices.Where(b => b.Id != device.Id).ToList();
+        Self.StateHasChanged();
+    }
 }

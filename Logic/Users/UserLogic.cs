@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Data.DAO.Devices;
 using Data.DAO.Users;
 using IoTPortal.Model;
 
@@ -13,17 +14,16 @@ namespace Logic.Users
             _dao = new UserDao();
         }
 
-        public List<Device> GetSubscribedDevices(int userId)
+
+
+        public List<Register> GetSubscribedDevices(int userId)
         {
             var registers = _dao.GetSubscribedDevices(userId);
-            List<Device> devices = new List<Device>();
-            for (int i = 0; i < registers.Count; i++)
+            if (registers == null)
             {
-                var register = registers[i];
-                var device = register.Dev;
-                devices.Add(device);
+                return new List<Register>();
             }
-            return devices;
+            return registers;
         }
 
         public IoTUser GetUser(int userId)
@@ -49,6 +49,16 @@ namespace Logic.Users
         public void SaveUser(IoTUser user)
         {
             _dao.SaveUser(user);
+        }
+
+        public bool Unsubscribe(int userId, int deviceId)
+        {
+            return _dao.Unsubscribe(userId, deviceId);
+        }
+
+        public IoTUser ValidateLogin(string username, string password)
+        {
+            return _dao.ValidateLogin(username, password);
         }
     }
 }

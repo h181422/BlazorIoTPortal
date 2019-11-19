@@ -1,26 +1,29 @@
 ﻿@page "/subscriptions"
 @inject IUserApi UserApi
 @layout Shared.MainLayout
+@using IoTPortal.Client.Data
+
 
 <h1>Subscribed devices</h1>
 
 <div id="ticket-list">
-    @if (allDevices == null)
+    @if (allRegisters == null)
     {
         <h2>Loading subscribed devices...</h2>
     }
     else
     {
-        @if (allDevices.Count() == 0)
+        @if (allRegisters.Count() == 0)
         {
-            <h2>You are not subscribed to any devices</h2>
+            <h3>You are not subscribed to any devices</h3>
         }
         else
         {
             <div class="row">
-                @foreach (var device in allDevices)
+                @foreach (var register in allRegisters)
                 {
-                    <DeviceCard Device="@device" />
+
+                    <SubscribeCard Register="@register" />
                 }
             </div>
         }
@@ -29,10 +32,19 @@
 
 
 @code {
-    private IEnumerable<Device> allDevices { get; set; }
+    private IEnumerable<Register> allRegisters { get; set; }
+
+    public static Subscribed Self { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
-        allDevices = await UserApi.GetSubscribedDevicesAsync(0);
+        allRegisters = await UserApi.GetSubscribedDevicesAsync(AuthData.Id);
+        Self = this;
+    }
+
+    public static void Update(Register register)
+    {
+        Self.allRegisters = Self.allRegisters.Where(b => b.Id != register.Id).ToList();
+        Self.StateHasChanged();
     }
 }

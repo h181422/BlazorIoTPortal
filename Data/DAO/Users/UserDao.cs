@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization.Formatters;
 using IoTPortal.Model;
+using Microsoft.EntityFrameworkCore;
 
 namespace Data.DAO.Users
 {
@@ -12,9 +13,13 @@ namespace Data.DAO.Users
         {
             using (var db = new DataContext())
             {
-                
+                var registers = db.Users.Include(b => b.SubscribedDevices).FirstOrDefault(x => x.Id == userId)?.SubscribedDevices.ToList();
+                var list = db.Users.Include(b => b.SubscribedDevices).ThenInclude(SubscribedDevices => SubscribedDevices.Dev).FirstOrDefault(x => x.Id == userId).SubscribedDevices;
+                if (list == null)
+                    return new List<Register>();
+                return list;
+
             }
-            throw new NotImplementedException();
         }
 
         public IoTUser GetUser(int userId)
@@ -59,9 +64,36 @@ namespace Data.DAO.Users
         {
             using (var db = new DataContext())
             {
+                db.Database.BeginTransaction();
+                db.Database.ExecuteSqlCommand("SET IDENTITY_INSERT Users ON");
                 db.Users.Add(user);
                 db.SaveChanges();
+                db.Database.ExecuteSqlCommand("SET IDENTITY_INSERT Users OFF");
+                db.Database.CommitTransaction();  
+            }
+        }
+        public bool Unsubscribe(int userId, int deviceId)
+        {
+            using (var db = new DataContext())
+            {
+                var register = db.Registrations.FirstOrDefault(x => x.Dev.Id == deviceId && x.User.Id == userId);
+                if (register == null)
+                    return false;
+                db.Registrations.Remove(register);
+                db.SaveChanges();
+            }
+
+            return true;
+        }
+
+        public IoTUser ValidateLogin(string username, string password)
+        {
+            using (var db = new DataContext())
+            {
+                var user = db.Users.Include(b => b.OwnDevices).Include(b => b.SubscribedDevices).FirstOrDefault(u => u.Username.Equals(username) && u.Password.Equals(password));
+                return user;
             }
         }
     }
+     
 }

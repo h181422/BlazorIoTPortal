@@ -4,9 +4,11 @@ using IoTPortal.UI.Server.Data;
 using IoTPortal.Model;
 using System.Linq;
 using Logic.Devices;
+using Microsoft.AspNetCore.Authorization;
 
 namespace IoTPortal.UI.Server.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class DeviceController : ControllerBase
@@ -20,7 +22,12 @@ namespace IoTPortal.UI.Server.Controllers
 
         [HttpGet]
         [Route("all")]
-        public IEnumerable<Device> GetDevices() => _deviceLogic.GetDevices();
+        public IEnumerable<Device> GetDevices() => _deviceLogic.GetDevices("", false, true);
+
+        
+        [HttpGet]
+        [Route("user/{userId}")]
+        public IEnumerable<Device> GetDevicesFromUser(int userId) => _deviceLogic.GetDevicesFromUser(userId);
 
         [HttpGet]
         [Route("{deviceName}")]
@@ -45,7 +52,7 @@ namespace IoTPortal.UI.Server.Controllers
 
         [HttpDelete]
         [Route("{deviceId}")]
-        public IActionResult GetPublishedDevices([FromRoute] int deviceId) =>
+        public IActionResult GetPublishedDevice([FromRoute] int deviceId) =>
             Ok(_deviceLogic.GetDevices(true, true).Where(x=>deviceId == x.Id));
 
         [HttpGet]
@@ -63,10 +70,56 @@ namespace IoTPortal.UI.Server.Controllers
         }
 
         [HttpPost]
-        public IActionResult PostDevice([FromBody] Device device)
+        [Route("post/{userId}")]
+        public IActionResult PostDevice([FromBody] Device device, int userId)
         {
-            SampleData.Devices.Add(device);
-            return Ok();
+            return Ok(_deviceLogic.SaveDevice(device, userId));
+            
+        }
+
+        [HttpGet]
+        [Route( "approve/{app}/{registerId}")]
+        public IActionResult SetApprove([FromRoute] bool app, int registerId)
+        {
+            return Ok(_deviceLogic.SetApproved(app, registerId));
+        }
+
+        [HttpGet]
+        [Route("request/{userId}")]
+        public IEnumerable<Register> GetRequests([FromRoute] int userId)
+        {
+            return _deviceLogic.GetRequests(userId);
+        }
+
+        [HttpGet]
+        [Route("register/{registerId}")]
+        public IActionResult GetSubscription([FromRoute] int registerId)
+        {
+            return Ok(_deviceLogic.GetSubscription(registerId));
+           
+        }
+
+        [HttpGet]
+        [Route("delete/{deviceId}")]
+        public IActionResult DeleteDevice([FromRoute] int deviceId)
+        {
+            return Ok(_deviceLogic.RemoveDevice(deviceId));
+        }
+
+        [HttpGet]
+        [Route("subscribe/{userId}/{deviceId}")]
+        public IActionResult SubscribeToDevice([FromRoute] int userId, int deviceId)
+        {
+            return Ok(_deviceLogic.SubscribeToDevice(userId, deviceId));
+            
+        }
+
+        [HttpGet]
+        [Route("publish/{deviceId}/{isPublished}")]
+        public IActionResult SetPublished([FromRoute] int deviceId, bool isPublished)
+        {
+            return Ok(_deviceLogic.SetPublished(deviceId, isPublished));
+
         }
     }
 }

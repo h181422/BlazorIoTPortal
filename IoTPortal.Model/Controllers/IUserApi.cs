@@ -13,6 +13,13 @@ namespace IoTPortal.Model
 
         Task PostUser(IoTUser user);
 
-        Task<IEnumerable<Device>> GetSubscribedDevicesAsync(int userId);
+        Task<IEnumerable<Register>> GetSubscribedDevicesAsync(int userId);
+
+        Task<bool> Unsubscribe(int userId, int deviceId);
+        Task<IoTUser> Login(string username, string password);
+        void Logout();
+        void SaveAuth(string username, string password);
+        (string Username, string Password) GetAuth();
+
     }
 }

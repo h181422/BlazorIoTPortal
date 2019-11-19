@@ -5,9 +5,12 @@ using IoTPortal.Model;
 using System.Linq;
 using System;
 using Logic.Users;
+using System.Text;
+using Microsoft.AspNetCore.Authorization;
 
 namespace IoTPortal.UI.Server.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class UserController : ControllerBase
@@ -26,13 +29,28 @@ namespace IoTPortal.UI.Server.Controllers
             return _userLogic.GetUsers();
         }
 
-        [HttpGet]
-        [Route("{userIdentification}")]
-        public IActionResult GetUser([FromRoute] string userIdentification)
+        [AllowAnonymous]
+        [HttpPost]
+        [Route("login")]
+        public IoTUser Login([FromBody]IoTUser user)
         {
-            IoTUser user = int.TryParse(userIdentification, out int a)
-                ? _userLogic.GetUser(a)
-                : _userLogic.GetUser(userIdentification);
+            return _userLogic.ValidateLogin(user.Username, user.Password);
+        }
+
+        [HttpGet]
+        [Route("{userId}")]
+        public IActionResult GetUser([FromRoute] string userId)
+        {
+            IoTUser user = null;
+            int a;
+            if (int.TryParse(userId, out a))
+            {
+                user = _userLogic.GetUser(a);
+            }
+            else
+            {
+                user = _userLogic.GetUser(userId);
+            }
             if (user == null)
             {
                 return NotFound();
@@ -41,18 +59,26 @@ namespace IoTPortal.UI.Server.Controllers
         }
 
         [HttpPost]
-        public IActionResult PostDevice([FromBody] IoTUser user)
+        public IActionResult PostUser([FromBody] IoTUser user)
         {
             _userLogic.SaveUser(user);
             return Ok();
         }
 
         [HttpGet]
-        [Route("subscribed/{userId}")]
-        public IEnumerable<Device> GetSubscribedDevices([FromRoute] string userId)
+        [Route("subscribedDevs/{userId}")]
+        public IActionResult GetSubscribedDevices([FromRoute] string userId)
         {
             int id = int.Parse(userId);
-            return _userLogic.GetSubscribedDevices(id);
+            return Ok(_userLogic.GetSubscribedDevices(id));
+        }
+
+        [HttpGet]
+        [Route("unsubscribe/{userId}/{deviceId}")]
+        public IActionResult Unsubscribe([FromRoute] int userId, int deviceId)
+        {
+            return Ok(_userLogic.Unsubscribe(userId, deviceId));
+
         }
     }
 }
