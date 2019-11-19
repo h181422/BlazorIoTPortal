@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
+using System.Threading;
 using System.Threading.Tasks;
 using IoTPortal.Client.Data;
 
@@ -19,74 +21,54 @@ namespace IoTPortal.Model
 
         public async Task<Device> DeleteDeviceAsync(int deviceId)
         {
-            using (HttpClient httpClient = new HttpClient())
+            var response = await client.GetAsync($"device/delete/{deviceId}");
+            var devicesJson = await response.Content.ReadAsStringAsync();
+            var device = JsonSerializer.Deserialize<Device>(devicesJson, new JsonSerializerOptions
             {
-                httpClient.BaseAddress = client.BaseAddress;
-                var byteArray = Encoding.ASCII.GetBytes($"{AuthData.Username}:{AuthData.Password}");
-                client.DefaultRequestHeaders.Authorization =
-                    new System.Net.Http.Headers.AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
-                var response = await httpClient.GetAsync($"device/delete/{deviceId}");
-                var devicesJson = await response.Content.ReadAsStringAsync();
-                var device = JsonSerializer.Deserialize<Device>(devicesJson, new JsonSerializerOptions
-                {
-                    PropertyNameCaseInsensitive = true,
-                });
-                return device;
-            }
+                PropertyNameCaseInsensitive = true,
+            });
+            return device;
         }
 
         public async Task<Device> GetDeviceAsync(int deviceId)
         {
-            using (HttpClient httpClient = new HttpClient())
+            var response = await client.GetAsync($"device/{deviceId}");
+            var devicesJson = await response.Content.ReadAsStringAsync();
+            var device = JsonSerializer.Deserialize<Device>(devicesJson, new JsonSerializerOptions
             {
-                httpClient.BaseAddress = client.BaseAddress;
-                var byteArray = Encoding.ASCII.GetBytes($"{AuthData.Username}:{AuthData.Password}");
-                client.DefaultRequestHeaders.Authorization =
-                    new System.Net.Http.Headers.AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
-                var response = await httpClient.GetAsync($"device/{deviceId}");
-                var devicesJson = await response.Content.ReadAsStringAsync();
-                var device = JsonSerializer.Deserialize<Device>(devicesJson, new JsonSerializerOptions
-                {
-                    PropertyNameCaseInsensitive = true,
-                });
-                return device;
-            }
+                PropertyNameCaseInsensitive = true,
+            });
+            return device;
         }
 
         public async Task<IEnumerable<Device>> GetDevicesAsync()
         {
-            using (HttpClient httpClient = new HttpClient())
+            var response = await client.GetAsync($"device/all");
+            var devicesJson = await response.Content.ReadAsStringAsync();
+            var devices = JsonSerializer.Deserialize<List<Device>>(devicesJson, new JsonSerializerOptions
             {
-                httpClient.BaseAddress = client.BaseAddress;
-                var byteArray = Encoding.ASCII.GetBytes($"{AuthData.Username}:{AuthData.Password}");
-                client.DefaultRequestHeaders.Authorization =
-                    new System.Net.Http.Headers.AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
-                var response = await httpClient.GetAsync($"device/all");
-                var devicesJson = await response.Content.ReadAsStringAsync();
-                var devices = JsonSerializer.Deserialize<List<Device>>(devicesJson, new JsonSerializerOptions
-                {
-                    PropertyNameCaseInsensitive = true,
-                });
-                return devices;
-            }
+                PropertyNameCaseInsensitive = true,
+            });
+            return devices;
         }
 
         public async Task<IEnumerable<Device>> GetDevicesFromUser(int userId)
         {
-            using (HttpClient httpClient = new HttpClient())
+            string jsonContent = "";
+            var request = new HttpRequestMessage(HttpMethod.Get, client.BaseAddress+ $"device/user/{userId}");
+            request.Headers.Accept.Clear();
+            request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            var byteArray = Encoding.ASCII.GetBytes($"{AuthData.Username}:{AuthData.Password}");
+            request.Headers.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
+            request.Content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
+            var response = await client.SendAsync(request, CancellationToken.None);
+
+            var devicesJson = await response.Content.ReadAsStringAsync();
+            var devices = JsonSerializer.Deserialize<List<Device>>(devicesJson, new JsonSerializerOptions
             {
-                httpClient.BaseAddress = client.BaseAddress;
-                var byteArray = Encoding.ASCII.GetBytes($"{AuthData.Username}:{AuthData.Password}");
-                client.DefaultRequestHeaders.Authorization =
-                    new System.Net.Http.Headers.AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
-                var response = await client.GetAsync($"device/user/{userId}");
-                var devicesJson = await response.Content.ReadAsStringAsync();
-                var devices = JsonSerializer.Deserialize<List<Device>>(devicesJson, new JsonSerializerOptions
-                {
-                    PropertyNameCaseInsensitive = true,
-                });
-                return devices;
-            }
+                PropertyNameCaseInsensitive = true,
+            });
+            return devices;
         }
 
         public async Task<IEnumerable<Device>> GetPublishedDevicesAsync(string searchTerm)
@@ -102,7 +84,15 @@ namespace IoTPortal.Model
 
         public async Task<IEnumerable<Register>> GetRequestsAsync(int userId)
         {
-            var response = await client.GetAsync($"device/request/{userId}");
+            string jsonContent = "";
+            var request = new HttpRequestMessage(HttpMethod.Get, client.BaseAddress + $"device/request/{userId}");
+            request.Headers.Accept.Clear();
+            request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            var byteArray = Encoding.ASCII.GetBytes($"{AuthData.Username}:{AuthData.Password}");
+            request.Headers.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
+            request.Content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
+            var response = await client.SendAsync(request, CancellationToken.None);
+
             var registerJson = await response.Content.ReadAsStringAsync();
             var requests = JsonSerializer.Deserialize<List<Register>>(registerJson, new JsonSerializerOptions
             {
