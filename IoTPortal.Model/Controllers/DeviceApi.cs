@@ -141,9 +141,6 @@ namespace IoTPortal.Model
             request.Headers.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
             request.Content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
             var response = await client.SendAsync(request, CancellationToken.None);
-
-            //var content = new StringContent(JsonSerializer.Serialize(device), Encoding.UTF8, "application/json");
-            //var result = await client.PostAsync($"device", content);
         }
 
         public async Task<Register> SetApproved(bool app, int registerId)
