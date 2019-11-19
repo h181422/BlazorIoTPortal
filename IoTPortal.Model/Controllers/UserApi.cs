@@ -9,6 +9,8 @@ namespace IoTPortal.Model
     public abstract class UserApiBase : IUserApi
     {
         private HttpClient client;
+        public static string Username { get; set; }
+        public static string Password { get; set; }
 
         protected HttpClient Client
         {
@@ -25,6 +27,24 @@ namespace IoTPortal.Model
             });
             return users;
         }
+        
+        public async Task<IoTUser> Login(string username, string password)
+        {
+            var content = new StringContent(JsonSerializer.Serialize(new IoTUser(){Username = username, Password = password, Email = "", Id = 0,
+                    OwnDevices = new List<Device>(), SubscribedDevices = new List<Register>()}),
+                Encoding.UTF8, "application/json");
+            var response = await client.PostAsync($"user/login", content);
+            var userJson = await response.Content.ReadAsStringAsync();
+            var user = JsonSerializer.Deserialize<IoTUser>(userJson, new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true,
+            });
+            return user;
+        }
+
+        public abstract void SaveAuth(string username, string password);
+
+        public abstract (string Username, string Password) GetAuth();
 
         public async Task PostUser(IoTUser user)
         {

@@ -4,9 +4,11 @@ using IoTPortal.UI.Server.Data;
 using IoTPortal.Model;
 using System.Linq;
 using Logic.Devices;
+using Microsoft.AspNetCore.Authorization;
 
 namespace IoTPortal.UI.Server.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class DeviceController : ControllerBase
@@ -22,6 +24,7 @@ namespace IoTPortal.UI.Server.Controllers
         [Route("all")]
         public IEnumerable<Device> GetDevices() => _deviceLogic.GetDevices("", false, true);
 
+        
         [HttpGet]
         [Route("user/{userId}")]
         public IEnumerable<Device> GetDevicesFromUser(int userId) => _deviceLogic.GetDevicesFromUser(userId);

@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using IoTPortal.Components;
 using IoTPortal.Model;
 using IoTPortal.Client.Data;
+using Microsoft.AspNetCore.Components.Authorization;
 
 namespace IoTPortal.Client
 {
@@ -10,9 +11,11 @@ namespace IoTPortal.Client
     {
         public void ConfigureServices(IServiceCollection services)
         {
-            //Dependency injection
             services.AddSingleton<IDeviceApi, DeviceApi>();
             services.AddSingleton<IUserApi, UserApi>();
+            services.AddSingleton<IUserApi, UserApi>();
+
+            //services.AddScoped<AuthenticationStateProvider, CustomAuthStateProvider>();
         }
 
         public void Configure(IComponentsApplicationBuilder app)

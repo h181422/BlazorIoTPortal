@@ -6,9 +6,11 @@ using System.Linq;
 using System;
 using Logic.Users;
 using System.Text;
+using Microsoft.AspNetCore.Authorization;
 
 namespace IoTPortal.UI.Server.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class UserController : ControllerBase
@@ -25,6 +27,14 @@ namespace IoTPortal.UI.Server.Controllers
         public IEnumerable<IoTUser> GetUsers()
         {
             return _userLogic.GetUsers();
+        }
+
+        [AllowAnonymous]
+        [HttpPost]
+        [Route("login")]
+        public IoTUser Login([FromBody]IoTUser user)
+        {
+            return _userLogic.ValidateLogin(user.Username, user.Password);
         }
 
         [HttpGet]

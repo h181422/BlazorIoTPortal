@@ -3,6 +3,8 @@
 @inject IJSRuntime JsRuntime
 @inject IUserApi UserApi
 @using System.Linq
+@using IoTPortal.Model.Services
+@using Microsoft.AspNetCore.Authorization
 
 <style>
     .button {
@@ -52,7 +54,6 @@
 </div>
 
 @code {
-    private IoTUser User { get; set; } = new IoTUser();
 
     private string username { get; set; }
 
@@ -61,18 +62,35 @@
 
     protected override async Task OnInitializedAsync()
     {
-
     }
 
     private async Task HandleValidSubmit()
     {
-        // Current users ID
-        User.Username = username;
-        User.Password = password;
-        var loginSuccess = true;//await UserApi.ValidateUser(User);
-        if (loginSuccess)
+        var loginSuccess = await UserApi.Login(username, password);
+        if (loginSuccess != null)
         {
-
+            //await WriteCookieAsync("authdata", username + ":" + password, 30);
+            UserApi.SaveAuth(username, password);
         }
     }
+
+
+    //private async Task WriteCookieAsync(string name, string value, int days)
+    //{
+    //    JsInterop jsi = new JsInterop();
+    //    var test = await jsi.InvokeAsync<string>("blazorExtensions.WriteCookie", new object[]
+    //    {
+    //        name,
+    //        value,
+    //        days
+    //    });
+    //}
+    //private async Task<string> ReadCookieAsync(string name)
+    //{
+    //    JsInterop jsi = new JsInterop();
+    //    var test = await jsi.InvokeAsync<string>("blazorExtensions.ReadCookie");
+    //    return test;
+    //}
+
 }
+
