@@ -57,18 +57,23 @@ namespace Logic.Devices
         public List<Register> GetRequests(int userId)
         {
             var ownDevices = _dao.GetDevicesFromUser(userId);
+            var ids = new List<int>();
+            foreach (var dev in ownDevices)
+            {
+                ids.Add(dev.Id);
+            }
             var registers = _dao.GetRegisters();
             List<Register> requests = new List<Register>();
             for (int i = 0; i < registers.Count; i++)
             {
                 var register = registers[i];
-                var registerDevice = register.Dev;
-                if (ownDevices.Contains(registerDevice))
+                var registerDeviceId = register.Dev.Id;
+                if (ids.Contains(registerDeviceId))
                 {
                     requests.Add(register);
                 }
             }
-            return registers;
+            return requests;
         }
 
         public Register GetSubscription(int registerId)

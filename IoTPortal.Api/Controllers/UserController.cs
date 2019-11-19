@@ -58,6 +58,7 @@ namespace IoTPortal.UI.Server.Controllers
             return Ok(user);
         }
 
+        [AllowAnonymous]
         [HttpPost]
         public IActionResult PostUser([FromBody] IoTUser user)
         {

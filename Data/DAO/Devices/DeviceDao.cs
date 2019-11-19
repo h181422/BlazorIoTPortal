@@ -148,7 +148,7 @@ namespace Data.DAO.Devices
             using (var db = new DataContext())
             {
                 var device = GetDevice(deviceId);
-                var user = db.Users.FirstOrDefault(x => x.Id == 1);
+                var user = db.Users.FirstOrDefault(x => x.Id == userId);
                 var register = new Register();
                 register.Id = GetNextRegisterId();
                 register.Approved = false;

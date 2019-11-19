@@ -137,6 +137,8 @@ namespace IoTPortal.Model
             var request = new HttpRequestMessage(HttpMethod.Post, _baseAddress + $"device/post/{userId}");
             request.Headers.Accept.Clear();
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            var byteArray = Encoding.ASCII.GetBytes($"{AuthData.Username}:{AuthData.Password}");
+            request.Headers.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
             request.Content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
             var response = await client.SendAsync(request, CancellationToken.None);
 
