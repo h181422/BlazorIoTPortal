@@ -10,7 +10,7 @@ namespace Data.DAO.Devices
     public class DeviceDao : IDeviceDao
     {
 
-        public void SaveDevice(Device device, int userId)
+        public Device SaveDevice(Device device, int userId)
         {
             using (var db = new DataContext())
             {
@@ -22,7 +22,7 @@ namespace Data.DAO.Devices
                 db.SaveChanges();
                 db.Database.ExecuteSqlCommand("SET IDENTITY_INSERT Devices OFF");
                 db.Database.CommitTransaction();
-
+                return device;
             }
         }
 

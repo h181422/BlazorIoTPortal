@@ -81,9 +81,9 @@ namespace Logic.Devices
             return _dao.SubscribeToDevice(userId, deviceId);
         }
 
-        public void SaveDevice(Device device, int userId)
+        public Device SaveDevice(Device device, int userId)
         {
-            _dao.SaveDevice(device, userId);
+           return _dao.SaveDevice(device, userId);
         }
 
         public Device SetPublished(int deviceId, bool isPublished)

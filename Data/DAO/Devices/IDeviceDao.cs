@@ -5,7 +5,7 @@ namespace Data.DAO.Devices
 {
     public interface IDeviceDao
     {
-        void SaveDevice(Device device, int userId);
+        Device SaveDevice(Device device, int userId);
         bool RemoveDevice(int deviceId);
         List<Device> GetDevicesFromUser(int userId, bool checkPublished = false, bool published = true);
         List<Device> GetDevices(bool checkPublished = false, bool published = true);
