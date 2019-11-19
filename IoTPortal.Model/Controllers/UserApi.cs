@@ -1,16 +1,16 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
+using IoTPortal.Client.Data;
 
 namespace IoTPortal.Model
 {
     public abstract class UserApiBase : IUserApi
     {
         private HttpClient client;
-        public static string Username { get; set; }
-        public static string Password { get; set; }
 
         protected HttpClient Client
         {
@@ -19,13 +19,20 @@ namespace IoTPortal.Model
 
         public async Task<IEnumerable<IoTUser>> GetUsersAsync()
         {
-            var response = await client.GetAsync($"user/all");
-            var usersJson = await response.Content.ReadAsStringAsync();
-            var users = JsonSerializer.Deserialize<List<IoTUser>>(usersJson, new JsonSerializerOptions
+            using (HttpClient httpClient = new HttpClient())
             {
-                PropertyNameCaseInsensitive = true,
-            });
-            return users;
+                httpClient.BaseAddress = client.BaseAddress;
+                var byteArray = Encoding.ASCII.GetBytes($"{AuthData.Username}:{AuthData.Password}");
+                client.DefaultRequestHeaders.Authorization =
+                    new System.Net.Http.Headers.AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
+                var response = await client.GetAsync($"user/all");
+                var usersJson = await response.Content.ReadAsStringAsync();
+                var users = JsonSerializer.Deserialize<List<IoTUser>>(usersJson, new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true,
+                });
+                return users;
+            }
         }
         
         public async Task<IoTUser> Login(string username, string password)
@@ -39,6 +46,11 @@ namespace IoTPortal.Model
             {
                 PropertyNameCaseInsensitive = true,
             });
+            if (user != null)
+            {
+                AuthData.Username = username;
+                AuthData.Password = password;
+            }
             return user;
         }
 
@@ -48,51 +60,86 @@ namespace IoTPortal.Model
 
         public async Task PostUser(IoTUser user)
         {
-            var content = new StringContent(JsonSerializer.Serialize(user), Encoding.UTF8, "application/json");
-            var result = await client.PostAsync($"user", content);
+            using (HttpClient httpClient = new HttpClient())
+            {
+                httpClient.BaseAddress = client.BaseAddress;
+                var byteArray = Encoding.ASCII.GetBytes($"{AuthData.Username}:{AuthData.Password}");
+                client.DefaultRequestHeaders.Authorization =
+                    new System.Net.Http.Headers.AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
+                var content = new StringContent(JsonSerializer.Serialize(user), Encoding.UTF8, "application/json");
+                var result = await httpClient.PostAsync($"user", content);
+            }
         }
 
         public async Task<IoTUser> GetUserAsync(int userId)
         {
-            var response = await client.GetAsync($"user/{userId}");
-            var usersJson = await response.Content.ReadAsStringAsync();
-            var user = JsonSerializer.Deserialize<IoTUser>(usersJson, new JsonSerializerOptions
+            using (HttpClient httpClient = new HttpClient())
             {
-                PropertyNameCaseInsensitive = true,
-            });
-            return user;
+                httpClient.BaseAddress = client.BaseAddress;
+                var byteArray = Encoding.ASCII.GetBytes($"{AuthData.Username}:{AuthData.Password}");
+                client.DefaultRequestHeaders.Authorization =
+                    new System.Net.Http.Headers.AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
+                var response = await httpClient.GetAsync($"user/{userId}");
+                var usersJson = await response.Content.ReadAsStringAsync();
+                var user = JsonSerializer.Deserialize<IoTUser>(usersJson, new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true,
+                });
+                return user;
+            }
         }
 
         public async Task<IoTUser> GetUserAsync(string username)
         {
-            var response = await client.GetAsync($"user/{username}");
-            var usersJson = await response.Content.ReadAsStringAsync();
-            var user = JsonSerializer.Deserialize<IoTUser>(usersJson, new JsonSerializerOptions
+            using (HttpClient httpClient = new HttpClient())
             {
-                PropertyNameCaseInsensitive = true,
-            });
-            return user;
+                httpClient.BaseAddress = client.BaseAddress;
+                var byteArray = Encoding.ASCII.GetBytes($"{AuthData.Username}:{AuthData.Password}");
+                client.DefaultRequestHeaders.Authorization =
+                    new System.Net.Http.Headers.AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
+                var response = await httpClient.GetAsync($"user/{username}");
+                var usersJson = await response.Content.ReadAsStringAsync();
+                var user = JsonSerializer.Deserialize<IoTUser>(usersJson, new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true,
+                });
+                return user;
+            }
         }
 
         public async Task<IEnumerable<Register>> GetSubscribedDevicesAsync(int userId)
         {
-            var response = await client.GetAsync($"user/subscribedDevs/{userId}");
-            var registerJson = await response.Content.ReadAsStringAsync();
-            var registers = JsonSerializer.Deserialize<List<Register>>(registerJson, new JsonSerializerOptions
+            using (HttpClient httpClient = new HttpClient())
             {
-                PropertyNameCaseInsensitive = true,
-            });
-            return registers;
+                httpClient.BaseAddress = client.BaseAddress;
+                var byteArray = Encoding.ASCII.GetBytes($"{AuthData.Username}:{AuthData.Password}");
+                client.DefaultRequestHeaders.Authorization =
+                    new System.Net.Http.Headers.AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
+                var response = await httpClient.GetAsync($"user/subscribedDevs/{userId}");
+                var registerJson = await response.Content.ReadAsStringAsync();
+                var registers = JsonSerializer.Deserialize<List<Register>>(registerJson, new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true,
+                });
+                return registers;
+            }
         }
         public async Task<bool> Unsubscribe(int userId, int deviceId)
         {
-            var response = await client.GetAsync($"user/unsubscribe/{userId}/{deviceId}/");
-            var boolJson = await response.Content.ReadAsStringAsync();
-            var bol = JsonSerializer.Deserialize<bool>(boolJson, new JsonSerializerOptions
+            using (HttpClient httpClient = new HttpClient())
             {
-                PropertyNameCaseInsensitive = true,
-            });
-            return bol;
+                httpClient.BaseAddress = client.BaseAddress;
+                var byteArray = Encoding.ASCII.GetBytes($"{AuthData.Username}:{AuthData.Password}");
+                client.DefaultRequestHeaders.Authorization =
+                    new System.Net.Http.Headers.AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
+                var response = await httpClient.GetAsync($"user/unsubscribe/{userId}/{deviceId}/");
+                var boolJson = await response.Content.ReadAsStringAsync();
+                var bol = JsonSerializer.Deserialize<bool>(boolJson, new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true,
+                });
+                return bol;
+            }
         }
     }
 }
