@@ -32,8 +32,17 @@
 @code {
     private IEnumerable<Register> allRegisters { get; set; }
 
+    public static Subscribed Self { get; set; }
+
     protected override async Task OnInitializedAsync()
     {
         allRegisters = await UserApi.GetSubscribedDevicesAsync(1);
+        Self = this;
+    }
+
+    public static void Update(Register register)
+    {
+        Self.allRegisters = Self.allRegisters.Where(b => b.Id != register.Id).ToList();
+        Self.StateHasChanged();
     }
 }

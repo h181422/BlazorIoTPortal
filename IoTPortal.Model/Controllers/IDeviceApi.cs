@@ -20,7 +20,7 @@ namespace IoTPortal.Model
 
         Task<Register> GetSubscriptionAsync(int registerId);
 
-        Task<Device> DeleteDeviceAsync(int deviceId);
+        Task<bool> DeleteDeviceAsync(int deviceId);
 
         Task<Device> SubscribeToDeviceAsync(int userId, int deviceId);
 

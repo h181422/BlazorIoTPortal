@@ -27,7 +27,11 @@
 
     private async Task deleteDevice()
     {
-        Device = await DeviceApi.DeleteDeviceAsync(Device.Id);
+        var hasDeleted = await DeviceApi.DeleteDeviceAsync(Device.Id);
+        if (hasDeleted)
+        {
+            Devices.Update(Device);
+        }
     }
 
     private async Task setPublished()

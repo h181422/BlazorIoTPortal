@@ -15,15 +15,15 @@ namespace IoTPortal.Model
             set => client = value;
         }
 
-        public async Task<Device> DeleteDeviceAsync(int deviceId)
+        public async Task<bool> DeleteDeviceAsync(int deviceId)
         {
             var response = await client.GetAsync($"device/delete/{deviceId}");
-            var devicesJson = await response.Content.ReadAsStringAsync();
-            var device = JsonSerializer.Deserialize<Device>(devicesJson, new JsonSerializerOptions
+            var boolJson = await response.Content.ReadAsStringAsync();
+            var bol = JsonSerializer.Deserialize<bool>(boolJson, new JsonSerializerOptions
             {
                 PropertyNameCaseInsensitive = true,
             });
-            return device;
+            return bol;
         }
 
         public async Task<Device> GetDeviceAsync(int deviceId)

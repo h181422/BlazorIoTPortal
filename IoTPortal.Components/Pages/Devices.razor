@@ -3,19 +3,19 @@
 @inject IDeviceApi DeviceApi
 @layout Shared.MainLayout
 
-    <style>
-        .button {
-            font: bold 16px Arial;
-            text-decoration: none;
-            background-color: #EEEEEE;
-            color: #333333;
-            padding: 2px 6px 2px 6px;
-            border-top: 1px solid #CCCCCC;
-            border-right: 1px solid #333333;
-            border-bottom: 1px solid #333333;
-            border-left: 1px solid #CCCCCC;
-        }
-    </style>
+<style>
+    .button {
+        font: bold 16px Arial;
+        text-decoration: none;
+        background-color: #EEEEEE;
+        color: #333333;
+        padding: 2px 6px 2px 6px;
+        border-top: 1px solid #CCCCCC;
+        border-right: 1px solid #333333;
+        border-bottom: 1px solid #333333;
+        border-left: 1px solid #CCCCCC;
+    }
+</style>
 
 <h1>Your Devices</h1>
 
@@ -64,10 +64,18 @@
 
     private IEnumerable<Register> requests { get; set; }
 
+    public static Devices Self { get; set; }
+
     protected override async Task OnInitializedAsync()
     {
         allDevices = await DeviceApi.GetDevicesFromUser(1);
         requests = await DeviceApi.GetRequestsAsync(1);
+        Self = this;
     }
 
+    public static void Update(Device device)
+    {
+        Self.allDevices = Self.allDevices.Where(b => b.Id != device.Id).ToList();
+        Self.StateHasChanged();
+    }
 }

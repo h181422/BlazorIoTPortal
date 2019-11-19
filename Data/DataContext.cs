@@ -15,7 +15,6 @@ namespace Data
         public DbSet<Register> Registrations { get; set; }
 
 
-
         public DataContext(DbContextOptions<DataContext> options)
             : base(options)
         { }
