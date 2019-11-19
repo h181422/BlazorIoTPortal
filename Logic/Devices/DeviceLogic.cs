@@ -20,7 +20,12 @@ namespace Logic.Devices
 
         public List<Device> GetDevicesFromUser(int userId, bool checkPublished = false, bool published = true)
         {
-            return _dao.GetDevicesFromUser(userId, checkPublished, published);
+            var devices = _dao.GetDevicesFromUser(userId, checkPublished, published);
+            if (devices == null)
+            {
+                return new List<Device>();
+            }
+            return devices;
         }
 
         public List<Device> GetDevices(bool checkPublished = false, bool published = true)
@@ -45,6 +50,7 @@ namespace Logic.Devices
 
         public Register SetApproved(bool app, int registerId)
         {
+
             var register = _dao.SetApproved(app, registerId);
             if (app)
             {
@@ -53,23 +59,29 @@ namespace Logic.Devices
             }
             return register;
 
+
         }
 
         public List<Register> GetRequests(int userId)
         {
             var ownDevices = _dao.GetDevicesFromUser(userId);
+            var ids = new List<int>();
+            foreach (var dev in ownDevices)
+            {
+                ids.Add(dev.Id);
+            }
             var registers = _dao.GetRegisters();
             List<Register> requests = new List<Register>();
             for (int i = 0; i < registers.Count; i++)
             {
                 var register = registers[i];
-                var registerDevice = register.Dev;
-                if (ownDevices.Contains(registerDevice))
+                var registerDeviceId = register.Dev.Id;
+                if (ids.Contains(registerDeviceId))
                 {
                     requests.Add(register);
                 }
             }
-            return registers;
+            return requests;
         }
 
         public Register GetSubscription(int registerId)
@@ -82,9 +94,9 @@ namespace Logic.Devices
             return _dao.SubscribeToDevice(userId, deviceId);
         }
 
-        public void SaveDevice(Device device)
+        public Device SaveDevice(Device device, int userId)
         {
-            _dao.SaveDevice(device);
+           return _dao.SaveDevice(device, userId);
         }
 
         public Device SetPublished(int deviceId, bool isPublished)

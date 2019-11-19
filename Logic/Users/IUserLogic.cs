@@ -12,6 +12,6 @@ namespace Logic.Users
         IoTUser GetUser(string username);
         List<Register> GetSubscribedDevices(int userId);
         bool Unsubscribe(int userId, int deviceId);
-
+        IoTUser ValidateLogin(string username, string password);
     }
 }

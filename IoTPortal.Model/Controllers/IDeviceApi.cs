@@ -12,7 +12,7 @@ namespace IoTPortal.Model
 
         Task<Device> GetDeviceAsync(int deviceId);
 
-        Task PostDevice(Device device);
+        Task PostDevice(Device device, int userId);
 
         Task<Register> SetApproved(bool app, int registerId);
 
@@ -20,7 +20,7 @@ namespace IoTPortal.Model
 
         Task<Register> GetSubscriptionAsync(int registerId);
 
-        Task<Device> DeleteDeviceAsync(int deviceId);
+        Task<bool> DeleteDeviceAsync(int deviceId);
 
         Task<Device> SubscribeToDeviceAsync(int userId, int deviceId);
 

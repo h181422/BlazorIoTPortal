@@ -1,6 +1,8 @@
 ﻿@page "/subscriptions"
 @inject IUserApi UserApi
 @layout Shared.MainLayout
+@using IoTPortal.Client.Data
+
 
 <h1>Subscribed devices</h1>
 
@@ -32,9 +34,17 @@
 @code {
     private IEnumerable<Register> allRegisters { get; set; }
 
+    public static Subscribed Self { get; set; }
+
     protected override async Task OnInitializedAsync()
     {
-        allRegisters = await UserApi.GetSubscribedDevicesAsync(1);
-        System.Diagnostics.Debug.WriteLine(allRegisters.ElementAt(0).Id);
+        allRegisters = await UserApi.GetSubscribedDevicesAsync(AuthData.Id);
+        Self = this;
+    }
+
+    public static void Update(Register register)
+    {
+        Self.allRegisters = Self.allRegisters.Where(b => b.Id != register.Id).ToList();
+        Self.StateHasChanged();
     }
 }

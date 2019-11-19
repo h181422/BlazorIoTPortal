@@ -1,8 +1,10 @@
 ﻿@page "/AddDevice"
 @inject IJSRuntime JsRuntime
 @inject IDeviceApi DeviceApi
+@inject NavigationManager NavigationManager
 @layout Shared.MainLayout
 @using System.Linq
+@using IoTPortal.Client.Data
 
 <div class="book">
     <h1>Add device</h1>
@@ -31,7 +33,7 @@
         </div>
         <ValidationSummary />
 
-        <button type="submit" class="btn btn-primary" >Submit</button>
+        <button type="submit" class="btn btn-primary">Submit</button>
     </EditForm>
 
 </div>
@@ -47,7 +49,7 @@
     private async Task HandleValidSubmit()
     {
         // Current users ID
-        System.Diagnostics.Debug.WriteLine("Device id: " +Device.Id);
+        System.Diagnostics.Debug.WriteLine("Device id: " + Device.Id);
         var oldDevice = await DeviceApi.GetDeviceAsync(Device.Id);
         if (oldDevice.Id == Device.Id)
         {
@@ -56,6 +58,8 @@
             return;
         }
 
-        await DeviceApi.PostDevice(Device);
+        await DeviceApi.PostDevice(Device, AuthData.Id);
+        NavigationManager.NavigateTo("/devices");
+
     }
 }

@@ -10,20 +10,19 @@ namespace Data.DAO.Devices
     public class DeviceDao : IDeviceDao
     {
 
-        public void SaveDevice(Device device)
+        public Device SaveDevice(Device device, int userId)
         {
             using (var db = new DataContext())
             {
                 db.Database.BeginTransaction();
                 db.Database.ExecuteSqlCommand("SET IDENTITY_INSERT Devices ON");
-                // CURRENT USER HERE
                 db.Devices.Add(device);
-                var user = db.Users.Where(b => b.Id == 1).Include(b => b.OwnDevices).FirstOrDefault();
+                var user = db.Users.Where(b => b.Id == userId).Include(b => b.OwnDevices).FirstOrDefault();
                 user.OwnDevices.Add(device);
                 db.SaveChanges();
                 db.Database.ExecuteSqlCommand("SET IDENTITY_INSERT Devices OFF");
                 db.Database.CommitTransaction();
-
+                return device;
             }
         }
 
@@ -149,9 +148,9 @@ namespace Data.DAO.Devices
             using (var db = new DataContext())
             {
                 var device = GetDevice(deviceId);
-                var user = db.Users.FirstOrDefault(x => x.Id == 1);
+                var user = db.Users.FirstOrDefault(x => x.Id == userId);
                 var register = new Register();
-                register.Id = getNextRegisterId();
+                register.Id = GetNextRegisterId();
                 register.Approved = false;
                 register.Dev = device;
                 register.User = user;
@@ -167,7 +166,7 @@ namespace Data.DAO.Devices
             }
         }
 
-        public int getNextRegisterId()
+        public int GetNextRegisterId()
         {
             using (var db = new DataContext())
             {
