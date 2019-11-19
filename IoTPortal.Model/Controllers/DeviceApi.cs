@@ -40,7 +40,14 @@ namespace IoTPortal.Model
 
         public async Task<Device> GetDeviceAsync(int deviceId)
         {
-            var response = await client.GetAsync($"device/{deviceId}");
+            //var response = await client.GetAsync($"device/{deviceId}");
+            var request = new HttpRequestMessage(HttpMethod.Get, _baseAddress + $"device/{deviceId}");
+            request.Headers.Accept.Clear();
+            request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            var byteArray = Encoding.ASCII.GetBytes($"{AuthData.Username}:{AuthData.Password}");
+            request.Headers.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
+            var response = await client.SendAsync(request, CancellationToken.None);
+
             var devicesJson = await response.Content.ReadAsStringAsync();
             var device = JsonSerializer.Deserialize<Device>(devicesJson, new JsonSerializerOptions
             {
@@ -126,17 +133,13 @@ namespace IoTPortal.Model
         public async Task PostDevice(Device device, int userId)
         {
             string jsonContent = JsonSerializer.Serialize(device);
+            System.Diagnostics.Debug.WriteLine(jsonContent);
             var request = new HttpRequestMessage(HttpMethod.Post, _baseAddress + $"device/post/{userId}");
             request.Headers.Accept.Clear();
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             request.Content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
             var response = await client.SendAsync(request, CancellationToken.None);
 
-            var deviceJson = await response.Content.ReadAsStringAsync();
-            var dev = JsonSerializer.Deserialize<Device>(deviceJson, new JsonSerializerOptions
-            {
-                PropertyNameCaseInsensitive = true,
-            });
             //var content = new StringContent(JsonSerializer.Serialize(device), Encoding.UTF8, "application/json");
             //var result = await client.PostAsync($"device", content);
         }
