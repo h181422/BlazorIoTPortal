@@ -1,14 +1,19 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
+using System.Threading;
 using System.Threading.Tasks;
+using IoTPortal.Client.Data;
 
 namespace IoTPortal.Model
 {
     public abstract class DeviceApiBase : IDeviceApi
     {
         private HttpClient client;
+        private string _baseAddress = "http://localhost:5000/api/";
 
         protected HttpClient Client
         {
@@ -50,7 +55,13 @@ namespace IoTPortal.Model
 
         public async Task<IEnumerable<Device>> GetDevicesFromUser(int userId)
         {
-            var response = await client.GetAsync($"device/user/{userId}");
+            var request = new HttpRequestMessage(HttpMethod.Get, _baseAddress+ $"device/user/{userId}");
+            request.Headers.Accept.Clear();
+            request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            var byteArray = Encoding.ASCII.GetBytes($"{AuthData.Username}:{AuthData.Password}");
+            request.Headers.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
+            var response = await client.SendAsync(request, CancellationToken.None);
+
             var devicesJson = await response.Content.ReadAsStringAsync();
             var devices = JsonSerializer.Deserialize<List<Device>>(devicesJson, new JsonSerializerOptions
             {
@@ -72,7 +83,13 @@ namespace IoTPortal.Model
 
         public async Task<IEnumerable<Register>> GetRequestsAsync(int userId)
         {
-            var response = await client.GetAsync($"device/request/{userId}");
+            var request = new HttpRequestMessage(HttpMethod.Get, _baseAddress + $"device/request/{userId}");
+            request.Headers.Accept.Clear();
+            request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            var byteArray = Encoding.ASCII.GetBytes($"{AuthData.Username}:{AuthData.Password}");
+            request.Headers.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
+            var response = await client.SendAsync(request, CancellationToken.None);
+
             var registerJson = await response.Content.ReadAsStringAsync();
             var requests = JsonSerializer.Deserialize<List<Register>>(registerJson, new JsonSerializerOptions
             {
