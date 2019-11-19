@@ -1,0 +1,100 @@
+﻿@page "/"
+@page "/login"
+@inject IJSRuntime JsRuntime
+@inject IUserApi UserApi
+@inject NavigationManager NavigationManager
+@using System.Linq
+@using IoTPortal.Model.Services
+@using Microsoft.AspNetCore.Authorization
+
+<style>
+    .button {
+        font: bold 16px Arial;
+        text-decoration: none;
+        background-color: #EEEEEE;
+        color: #333333;
+        padding: 2px 6px 2px 6px;
+        border-top: 1px solid #CCCCCC;
+        border-right: 1px solid #333333;
+        border-bottom: 1px solid #333333;
+        border-left: 1px solid #CCCCCC;
+    }
+</style>
+
+<div class="book">
+    <h1>IoT Portal - Login</h1>
+
+    <table>
+        <tr>
+            <td>
+                <h2>Username</h2>
+            </td>
+            <td>
+                <input @bind="@username" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <h2>Password</h2>
+            </td>
+            <td>
+                <input @bind="@password" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <button class="button" type="button" @onclick="HandleValidSubmit">Login</button>
+            </td>
+            <td>
+                <a class="button" href="/signUp">Sign up</a>
+            </td>
+        </tr>
+    </table>
+
+</div>
+
+@code {
+
+    private string username { get; set; }
+
+    private string password { get; set; }
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        UserApi.Logout();
+    }
+
+    private async Task HandleValidSubmit()
+    {
+        var loginSuccess = await UserApi.Login(username, password);
+        if (loginSuccess != null)
+        {
+            //await WriteCookieAsync("authdata", username + ":" + password, 30);
+            UserApi.SaveAuth(username, password);
+            NavigationManager.NavigateTo("/devices");
+
+
+        }
+    }
+
+
+    //private async Task WriteCookieAsync(string name, string value, int days)
+    //{
+    //    JsInterop jsi = new JsInterop();
+    //    var test = await jsi.InvokeAsync<string>("blazorExtensions.WriteCookie", new object[]
+    //    {
+    //        name,
+    //        value,
+    //        days
+    //    });
+    //}
+    //private async Task<string> ReadCookieAsync(string name)
+    //{
+    //    JsInterop jsi = new JsInterop();
+    //    var test = await jsi.InvokeAsync<string>("blazorExtensions.ReadCookie");
+    //    return test;
+    //}
+
+}
+

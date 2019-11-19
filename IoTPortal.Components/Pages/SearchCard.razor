@@ -1,0 +1,32 @@
+﻿
+@using IoTPortal.Model
+@using IoTPortal.Client.Data
+@layout Shared.MainLayout
+@inject IDeviceApi DeviceApi
+@inject NavigationManager NavigationManager
+
+<div class="card">
+    <DeviceImage DeviceImageLink="@GetDeviceLink(Device.Name)" />
+    <div class="card-body">
+        <h5 class="card-title">@Device.Name</h5>
+        <p class="card-text">
+            This Device has id <span class="highlight">@Device.Id</span>
+        </p>
+    </div>
+    <button type="button" @onclick="subscribeToDevice">Subscribe</button>
+
+</div>
+
+@code {
+    [Parameter]
+    public Device Device { get; set; }
+
+    private string GetDeviceLink(string deviceName) => Device.ImageLink;
+
+    private async Task subscribeToDevice()
+    {
+        Device = await DeviceApi.SubscribeToDeviceAsync(AuthData.Id, Device.Id);
+        NavigationManager.NavigateTo("/subscriptions");
+
+    }
+}

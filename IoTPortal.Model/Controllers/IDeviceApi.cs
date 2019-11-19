@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace IoTPortal.Model
@@ -8,10 +6,27 @@ namespace IoTPortal.Model
     public interface IDeviceApi
     {
         Task<IEnumerable<Device>> GetDevicesAsync();
+        Task<IEnumerable<Device>> GetDevicesFromUser(int userId);
 
-        Task<Device> GetDeviceAsync(string name);
+        Task<IEnumerable<Device>> GetPublishedDevicesAsync(string searchTerm);
 
-        Task PostDevice(Device device);
+        Task<Device> GetDeviceAsync(int deviceId);
+
+        Task PostDevice(Device device, int userId);
+
+        Task<Register> SetApproved(bool app, int registerId);
+
+        Task<IEnumerable<Register>> GetRequestsAsync(int userId);
+
+        Task<Register> GetSubscriptionAsync(int registerId);
+
+        Task<bool> DeleteDeviceAsync(int deviceId);
+
+        Task<Device> SubscribeToDeviceAsync(int userId, int deviceId);
+
+        Task<Device> SetPublishedAsync(int deviceId, bool isPublished);
+
+
 
     }
 }

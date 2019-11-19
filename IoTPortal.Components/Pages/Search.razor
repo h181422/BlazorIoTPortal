@@ -1,0 +1,65 @@
+﻿@page "/search"
+@inject IDeviceApi DeviceApi
+@layout Shared.MainLayout
+
+<h1>Search</h1>
+
+<div id="ticket-list">
+    @if (allDevices == null)
+    {
+        <h2>Fetching devices...</h2>
+    }
+    else
+    {
+        <div class="row">
+            @if (noDevices)
+            {
+                <h2>No published devices</h2>
+            }
+            else
+            {
+                <table>
+                    <tr>
+                        <td>
+                            <input @bind="@searchTerm" />
+                        </td>
+                        <td>
+                            <button type="button" @onclick="SearchDevices">Search</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <div class="row">
+                            @foreach (var device in allDevices)
+                            {
+                                <SearchCard Device="@device" />
+                            }
+                        </div>
+                    </tr>
+                </table>
+            }
+        </div>
+    }
+</div>
+
+
+@code {
+    private IEnumerable<Device> allDevices { get; set; }
+    private bool noDevices { get; set; } = true;
+    private string searchTerm { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        allDevices = await DeviceApi.GetPublishedDevicesAsync("");
+        if (allDevices.Count() != 0) 
+        {
+            noDevices = false;
+        }
+
+    }
+
+    protected async Task SearchDevices()
+    {
+        allDevices = await DeviceApi.GetPublishedDevicesAsync(searchTerm);
+    }
+
+}

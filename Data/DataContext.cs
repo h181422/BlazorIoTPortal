@@ -9,7 +9,10 @@ namespace Data
 {
     public class DataContext : DbContext
     {
-        public DbSet<Device> Employees { get; set; }
+        public DbSet<Device> Devices { get; set; }
+        public DbSet<IoTUser> Users { get; set; }
+        public DbSet<Feedback> Feedback { get; set; }
+        public DbSet<Register> Registrations { get; set; }
 
 
         public DataContext(DbContextOptions<DataContext> options)
@@ -23,7 +26,7 @@ namespace Data
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Server=tcp:blazoriot.database.windows.net,1433;Initial Catalog=iotdb;Persist Security Info=False;User ID=iotdb;Password=Blazordb2019;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
+            optionsBuilder.UseSqlServer("Server=tcp:iotportal2019.database.windows.net,1433;Initial Catalog=iotportal;Persist Security Info=False;User ID=lars;Password=BOLLand123;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
         }
     }
 }
