@@ -2,6 +2,8 @@
 @page "/devices"
 @inject IDeviceApi DeviceApi
 @layout Shared.MainLayout
+@using System.Diagnostics
+@using System.Security.Cryptography.X509Certificates
 @using IoTPortal.Client.Data
 
 
@@ -28,6 +30,9 @@
     }
     else
     {
+
+        <a class="button" @onclick="SortALot" style="font-size:20px;">Bubble-Sort a hundred times</a>
+        <p>@Result</p>
         <a class="button" href="/AddDevice" style="font-size:20px;">Add Device</a>
         if (allDevices.Count() == 0)
         {
@@ -80,4 +85,53 @@
         Self.allDevices = Self.allDevices.Where(b => b.Id != device.Id).ToList();
         Self.StateHasChanged();
     }
+
+    public static string Result;
+    public static int numElements = 1000;
+
+    public static void SortALot()
+    {
+        var sw = Stopwatch.StartNew();
+        for (int i = 0; i < 100; i++)
+        {
+            string prt = "";
+            sw.Reset();
+            sw.Start();
+            var arr = new List<int>();
+            Random r = new Random();
+            for (int j = 0; j < numElements; j++)
+            {
+                arr.Add(r.Next(100000));
+            }
+            prt += i+";Generated list;";
+            prt += sw.ElapsedMilliseconds;
+            BubbleSort(arr, arr.Count);
+            prt += ";sorted;" + sw.ElapsedMilliseconds;
+            Result += prt + "<br>";
+        }
+
+    }
+
+    public static void BubbleSort(List<int> tabell, int size)
+    {
+        bool bytter;
+        int temp;
+        size--;
+        do
+        {
+            bytter = false;
+            for (int i = 0; i < size; i++)
+            {
+                if (tabell[i] > tabell[i + 1])
+                {
+                    temp = tabell[i];
+                    tabell[i] = tabell[i + 1];
+                    tabell[i + 1] = temp;
+                    bytter = true;
+                }
+            }
+        } while (bytter);
+    }
+
+
 }
